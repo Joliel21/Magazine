@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "1.0",
+  "issueId": "2026-05-26",
+  "issueTitle": "BTA Magazine",
+  "spineText": "BTA Magazine",
+  "publisher": "Breathtaking Awareness",
+  "issueNumber": "Publication Date: 2026-05-26",
+  "publicationDate": "2026-05-26",
+  "coverImageUrl": "https://images.unsplash.com/photo-1619427905253-69e09ac8497a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+  "backCoverImageUrl": "",
+  "backCoverText": "Breathtaking Awareness",
+  "toc": [
+    {
+      "id": "welcome",
+      "title": "Welcome",
+      "pageNumber": 1,
+      "pageRange": "1-2"
+    },
+    {
+      "id": "feature",
+      "title": "Feature Story",
+      "pageNumber": 3,
+      "pageRange": "3-4"
+    }
+  ],
+  "pages": [
+    {
+      "pageNumber": 1,
+      "title": "Opening Page",
+      "imageUrl": "https://images.unsplash.com/photo-1619427905253-69e09ac8497a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "alt": "Opening page placeholder image"
+    },
+    {
+      "pageNumber": 2,
+      "title": "Editorial Page",
+      "imageUrl": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "alt": "Editorial page placeholder image"
+    },
+    {
+      "pageNumber": 3,
+      "title": "Feature Page",
+      "imageUrl": "https://images.unsplash.com/photo-1519681393784-d120267933ba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "alt": "Feature page placeholder image"
+    },
+    {
+      "pageNumber": 4,
+      "title": "Closing Page",
+      "imageUrl": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080",
+      "alt": "Closing page placeholder image"
+    }
+  ]
+}
