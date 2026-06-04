@@ -8,7 +8,7 @@ Publication date: April 10, 2026
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/live-fully-dc-mural.jpg`
+Image 1: images/articles/phlip-side/live-fully-dc-mural.jpg
 
 Caption: Columnist Jolie Lizana spends time in Washington, D.C., after a day of advocacy in March 2026. (Courtesy of Jolie Lizana)
 
