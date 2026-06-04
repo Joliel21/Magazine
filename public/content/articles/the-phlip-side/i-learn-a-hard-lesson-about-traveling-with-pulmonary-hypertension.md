@@ -6,20 +6,11 @@ By Jolie Lizana
 
 Publication date: May 29, 2026
 
-## Image/caption placement
-
-Image 1: images/articles/phlip-side/learned-a-hard-lesson.jpg
-
-Caption: Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)
-
-Alt text: A woman stands in front of the steps of the U.S. Capitol building.
-
----
-
 <!-- BTA_IMAGE_START -->
 
+![A woman stands in front of the steps of the U.S. Capitol building.](images/articles/phlip-side/learned-a-hard-lesson.jpg)
 
-*Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)*
+*Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington, D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)*
 
 <!-- BTA_IMAGE_END -->
 
