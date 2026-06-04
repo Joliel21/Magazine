@@ -8,7 +8,7 @@ Publication date: March 13, 2026
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/legislative-advocacy-us-capitol.jpg`
+Image 1: images/articles/phlip-side/legislative-advocacy-us-capitol.jpg
 
 Caption: Jolie Lizana recently visited the U.S. Capitol in Washington, D.C., to argue for two bills that would shape pulmonary hypertension care.
 
