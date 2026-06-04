@@ -8,7 +8,7 @@ Publication date: December 12, 2025
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/mindful-good-moments-holiday.jpg`
+Image 1: images/articles/phlip-side/mindful-good-moments-holiday.jpg
 
 Caption: Jolie Lizana and her son share a holiday moment. (Courtesy of Jolie Lizana)
 
