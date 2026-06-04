@@ -8,7 +8,7 @@ Publication date: November 14, 2025
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/advocating-ph-community-support-rare.jpg`
+Image 1: images/articles/phlip-side/advocating-ph-community-support-rare.jpg
 
 Caption: A PH advocate finds hope in new research, anxiety at the airport.
 
