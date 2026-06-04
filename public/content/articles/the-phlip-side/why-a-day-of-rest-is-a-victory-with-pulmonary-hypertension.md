@@ -6,7 +6,7 @@ By Jolie Lizana
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/rest-victory-reading.jpg`
+Image 1: images/articles/phlip-side/rest-victory-reading.jpg
 
 Caption: Columnist (Photo by: Jolie Lizana)
 
