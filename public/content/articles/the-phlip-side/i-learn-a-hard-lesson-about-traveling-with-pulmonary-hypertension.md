@@ -18,7 +18,7 @@ Alt text: A woman stands in front of the steps of the U.S. Capitol building.
 
 <!-- BTA_IMAGE_START -->
 
-![A woman stands in front of the steps of the U.S. Capitol building.](../../../images/articles/phlip-side/traveling-with-ph-capitol-steps.jpg)
+"Image1: images/articles/phip-side/learned-a-hard-lesson.jpg"
 
 *Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)*
 
