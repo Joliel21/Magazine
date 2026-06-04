@@ -6,7 +6,7 @@ By Jolie Lizana
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/tragically-blessed-jolie-zaylan-flier.jpg`
+Image 1: images/articles/phlip-side/tragically-blessed-jolie-zaylan-flier.jpg
 
 Caption: A flier of sorts introduces Jolie Lizana, a new columnist for Pulmonary Hypertension News, and her son, Zaylan. (Image by: Jolie Lizana)
 
