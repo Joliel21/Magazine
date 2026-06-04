@@ -6,7 +6,7 @@ By Jolie Lizana
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/fog-of-grief-zaylan-apple-tree.jpg`
+Image 1: images/articles/phlip-side/fog-of-grief-zaylan-apple-tree.jpg
 
 Caption: In this photo from 2013, Jolie Lizana’s son, Zaylan, 5, smiles next to his painting of an apple tree. (Photo by Jolie Lizana)
 
