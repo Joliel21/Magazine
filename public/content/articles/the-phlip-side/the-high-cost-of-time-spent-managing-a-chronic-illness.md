@@ -8,7 +8,7 @@ Publication date: October 24, 2025
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/high-cost-phone-call.jpg`
+Image 1: images/articles/phlip-side/high-cost-phone-call.jpg
 
 Caption: Living with a chronic, rare disease involves a lot of time on the phone. (Courtesy of Jolie Lizana)
 
