@@ -8,7 +8,7 @@ Publication date: February 27, 2026
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/iv-pump-to-oral-state-capitol-2025.jpg`
+Image 1: images/articles/phlip-side/iv-pump-to-oral-state-capitol-2025.jpg
 
 Caption: Jolie Lizana 2025 at State Capitol (Courtesy of Jolie Lizana)
 
