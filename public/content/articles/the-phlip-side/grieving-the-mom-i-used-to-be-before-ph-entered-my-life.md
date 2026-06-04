@@ -8,7 +8,7 @@ Publication date: February 13, 2026
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/grieving-mom-state-park-2014.jpg`
+Image 1: images/articles/phlip-side/grieving-mom-state-park-2014.jpg
 
 Caption: Jolie Lizana and her son, Zaylan, visit their local state park in 2014. (Courtesy of Jolie Lizana)
 
