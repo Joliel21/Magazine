@@ -6,7 +6,7 @@ By Jolie Lizana
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/pandoras-box-window-rain.jpg`
+Image 1: images/articles/phlip-side/pandoras-box-window-rain.jpg
 
 Caption: Columnist Jolie Lizana gazes out into the world. (Photo by Zaylan)
 
