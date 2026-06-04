@@ -10,7 +10,7 @@ Publication date: January 16, 2026
 
 <!-- BTA_IMAGE_START -->
 
-![A woman sits cross-legged among a fall display of pumpkins, gourds, hay, and autumn leaves.](../../../images/articles/phlip-side/coexisting-conditions-pumpkin-display.jpg)
+Image 1: images/articles/phlip-side/coexisting-conditions-pumpkin-display.jpg
 
 *Jolie Lizana sits among a fall pumpkin display. (Courtesy of Jolie Lizana)*
 
