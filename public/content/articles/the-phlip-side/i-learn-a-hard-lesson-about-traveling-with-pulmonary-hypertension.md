@@ -8,7 +8,7 @@ Publication date: May 29, 2026
 
 <!-- BTA_IMAGE_START -->
 
-![A woman stands in front of the steps of the U.S. Capitol building.](images/articles/phlip-side/learned-a-hard-lesson.jpg)
+![A woman stands in front of the steps of the U.S. Capitol building.](images/articles/phlip-side/learned-a-hard-lesson.jpeg)
 
 *Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington, D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)*
 
