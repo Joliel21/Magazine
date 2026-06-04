@@ -6,7 +6,7 @@ By Jolie Lizana
 
 ## Image/caption placement
 
-**Image 1:** `phlip-side/claiming-victory-columnist-graphic.jpg`
+Image 1: images/articles/phlip-side/claiming-victory-columnist-graphic.jpg
 
 Caption: Columnist (Graphic by Jolie Lizana)
 
