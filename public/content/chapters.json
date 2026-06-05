@@ -2,6 +2,7 @@
   {
     "title": "The PHlip-side",
     "slug": "the-phlip-side",
+    "coverImage": "images/chapter-covers/the-phlip-side.png",
     "count": 15,
     "articleIds": [
       "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed",
@@ -24,6 +25,7 @@
   {
     "title": "Scleroderma Foundation of Greater Chicago",
     "slug": "scleroderma-foundation-of-greater-chicago",
+    "coverImage": "images/chapter-covers/contributing-writings.png",
     "count": 2,
     "articleIds": [
       "the-weight-of-staying-well-when-survival-mode-stops-being-sustainable",
@@ -33,6 +35,7 @@
   {
     "title": "Rants of the Psyche",
     "slug": "rants-of-the-psyche",
+    "coverImage": "images/chapter-covers/rants-in-writing.png",
     "count": 4,
     "articleIds": [
       "lost-in-this-space",
@@ -44,6 +47,7 @@
   {
     "title": "Tips & Tricks",
     "slug": "tips-tricks",
+    "coverImage": "",
     "count": 4,
     "articleIds": [
       "housecleaning",
