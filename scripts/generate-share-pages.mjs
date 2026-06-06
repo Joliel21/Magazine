@@ -17,17 +17,22 @@ const AUTHOR_NAME = "Jolie Lizana";
 
 const FALLBACK_IMAGE =
   process.env.FALLBACK_SHARE_IMAGE ||
-  new URL("images/brand/BreathtakingAwareness_ContentsIcon.png", PUBLIC_ASSET_URL).toString();
-
-const PH_DEFAULT_IMAGE =
-  process.env.PH_DEFAULT_SHARE_IMAGE ||
-  new URL("images/articles/phlip-side/blessed.png", PUBLIC_ASSET_URL).toString();
+  new URL(
+    "images/articles/phlip-side/blessed.png",
+    PUBLIC_ASSET_URL,
+  ).toString();
 
 const ARTICLE_IMAGE_OVERRIDES = {
   "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed":
     new URL("images/articles/phlip-side/blessed.png", PUBLIC_ASSET_URL).toString(),
   "tragically-blessed":
     new URL("images/articles/phlip-side/blessed.png", PUBLIC_ASSET_URL).toString(),
+  "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension":
+    new URL("images/articles/phlip-side/rest-victory-reading.jpg", PUBLIC_ASSET_URL).toString(),
+  "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss":
+    new URL("images/articles/phlip-side/claiming-victory-columnist-graphic.jpg", PUBLIC_ASSET_URL).toString(),
+  "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph":
+    new URL("images/articles/phlip-side/pandoras-box-window-rain.jpg", PUBLIC_ASSET_URL).toString(),
   "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others":
     new URL("images/articles/phlip-side/How-to-explain.jpg", PUBLIC_ASSET_URL).toString(),
   "sticky-bras-are-good-for-the-heart":
@@ -67,10 +72,62 @@ const escapeHtml = (value = "") =>
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 
-const stripMarkdown = (value = "") =>
+const normalizeAssetPath = (value = "") => {
+  const raw = String(value || "")
+    .trim()
+    .replace(/^public\//, "")
+    .replace(/^\/+/, "");
+
+  if (!raw) return "";
+
+  // articles.json usually stores filenames like "phlip-side/image.jpg".
+  // Public URL must be "images/articles/phlip-side/image.jpg".
+  if (/^(phlip-side|scleroderma-foundation-of-greater-chicago|rants-of-the-psyche|tips-tricks)\//i.test(raw)) {
+    return `images/articles/${raw}`;
+  }
+
+  if (raw.startsWith("articles/")) {
+    return `images/${raw}`;
+  }
+
+  return raw;
+};
+
+const toPublicAssetUrl = (value = "") => {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  if (/^https?:\/\//i.test(raw)) return raw;
+
+  return new URL(normalizeAssetPath(raw), PUBLIC_ASSET_URL).toString();
+};
+
+const getMarkdownFileText = (article) => {
+  if (article.markdownContent) return String(article.markdownContent);
+
+  const markdownPath = article.markdownPath || article.path || article.filename || "";
+  if (!markdownPath) return "";
+
+  const normalizedPath = String(markdownPath)
+    .trim()
+    .replace(/^public\//, "")
+    .replace(/^\/+/, "");
+  const fullPath = path.join(publicDir, normalizedPath);
+
+  if (!fs.existsSync(fullPath)) return "";
+  return fs.readFileSync(fullPath, "utf8");
+};
+
+const removeImageAndCaptionBlocks = (value = "") =>
   String(value)
-    .replace(/!\[.*?\]\(.*?\)/g, "")
+    .replace(/!\[[^\]]*?\]\([^)]+?\)/g, "")
     .replace(/<!--\s*BTA_IMAGE_START\s*-->[\s\S]*?<!--\s*BTA_IMAGE_END\s*-->/gi, "")
+    .replace(/Image\/caption placement[\s\S]*?(?=\n\s*\n|$)/gi, "")
+    .replace(/^Image(?:\s+\d+)?:.*$/gim, "")
+    .replace(/^Caption(?:\s+\d+)?:.*$/gim, "")
+    .replace(/^Alt(?:\s+text)?(?:\s+\d+)?:.*$/gim, "");
+
+const stripMarkdown = (value = "") =>
+  removeImageAndCaptionBlocks(value)
     .replace(/<!--\s*PAGE_BREAK\s*-->/gi, "")
     .replace(/^#+\s+/gm, "")
     .replace(/\*\*(.*?)\*\*/g, "$1")
@@ -81,34 +138,6 @@ const stripMarkdown = (value = "") =>
     .replace(/^[-*+]\s+/gm, "")
     .replace(/\s+/g, " ")
     .trim();
-
-const normalizeAssetPath = (value = "") =>
-  String(value || "")
-    .trim()
-    .replace(/^public\//, "")
-    .replace(/^\/+/, "");
-
-const toPublicAssetUrl = (value = "") => {
-  const raw = String(value || "").trim();
-  if (!raw) return "";
-  if (/^https?:\/\//i.test(raw)) return raw;
-
-  const normalized = normalizeAssetPath(raw);
-  return new URL(normalized, PUBLIC_ASSET_URL).toString();
-};
-
-const getMarkdownFileText = (article) => {
-  if (article.markdownContent) return String(article.markdownContent);
-
-  const markdownPath = article.markdownPath || article.path || article.filename || "";
-  if (!markdownPath) return "";
-
-  const normalizedPath = normalizeAssetPath(markdownPath);
-  const fullPath = path.join(publicDir, normalizedPath);
-
-  if (!fs.existsSync(fullPath)) return "";
-  return fs.readFileSync(fullPath, "utf8");
-};
 
 const getFirstImageFromMarkdown = (markdown = "") => {
   const mdImage = markdown.match(/!\[[^\]]*?\]\((.*?)\)/);
@@ -125,7 +154,6 @@ const getFirstImageFromMarkdown = (markdown = "") => {
 const getArticleImage = (article, markdown) => {
   const idKey = normalizeArticleKey(article.id || "");
   const titleKey = normalizeArticleKey(article.title || "");
-  const chapterKey = normalizeArticleKey(article.chapter || article.chapterSlug || article.chapterTitle || "");
 
   if (ARTICLE_IMAGE_OVERRIDES[idKey]) return ARTICLE_IMAGE_OVERRIDES[idKey];
   if (ARTICLE_IMAGE_OVERRIDES[titleKey]) return ARTICLE_IMAGE_OVERRIDES[titleKey];
@@ -141,16 +169,11 @@ const getArticleImage = (article, markdown) => {
     imageRecord?.filename ||
     "";
 
-  const publicImage = toPublicAssetUrl(imageValue);
-  if (publicImage) return publicImage;
-
-  // LinkedIn needs an image. Use a PH-side fallback for PHlip-side pieces, then brand fallback.
-  if (chapterKey.includes("phlip") || chapterKey.includes("ph")) return PH_DEFAULT_IMAGE;
-  return FALLBACK_IMAGE;
+  return toPublicAssetUrl(imageValue) || FALLBACK_IMAGE;
 };
 
 const removeMetadataLines = (text = "") =>
-  String(text)
+  removeImageAndCaptionBlocks(text)
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean)
@@ -173,15 +196,15 @@ const getArticleExcerpt = (article, markdown) => {
     .replace(/^by\s+jolie\s+lizana\b.*?---\s*/i, "")
     .replace(/^publication\s+date\b.*?---\s*/i, "")
     .replace(/^editorial\b.*?---\s*/i, "")
+    .replace(/\bImage\/caption placement\b.*$/i, "")
     .trim();
 
   let excerpt = stripMarkdown(metadataExcerpt) || markdownExcerpt;
 
-  // LinkedIn warns below 100 characters. If the deck/subtitle is short, append the
-  // beginning of the body text so the outward-facing card has enough context.
   if (excerpt.length < 100 && markdownExcerpt) {
-    const combined = `${excerpt}. ${markdownExcerpt}`.replace(/\.\s*\./g, ".");
-    excerpt = combined.trim();
+    excerpt = `${excerpt}. ${markdownExcerpt}`
+      .replace(/\.\s*\./g, ".")
+      .trim();
   }
 
   if (!excerpt) {
