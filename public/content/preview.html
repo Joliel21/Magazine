@@ -1,1 +1,237 @@
-<!doctype html><meta charset="utf-8"><title>BTA Magazine Content Preview</title><style>body{font-family:system-ui;margin:2rem;max-width:900px}h1{color:#6d28d9}.card{border:1px solid #ddd;border-radius:12px;padding:1rem;margin:1rem 0}</style><h1>BTA Magazine Content Preview</h1><div id="app"></div><script>fetch('./articles.json').then(r=>r.json()).then(d=>{app.innerHTML=d.chapters.map(ch=>`<h2>${ch.title}</h2>`+d.articles.filter(a=>a.chapter===ch.title).map(a=>`<div class=card><h3>${a.title}</h3><p><em>${a.subtitle||''}</em></p><p>${a.date||''}</p><p><a href='./${a.markdownPath.replace('content/','')}'>Open Markdown</a></p></div>`).join('')).join('')})</script>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BTA Magazine Content Preview</title>
+  <style>
+    :root {
+      --ink: #021A2B;
+      --muted: #53616c;
+      --border: #d8d2c4;
+      --gold: #af9355;
+      --cream: #f8f3e8;
+      --purple: #6d28d9;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      margin: 2rem;
+      max-width: 980px;
+      color: var(--ink);
+      background: #fffdf8;
+    }
+
+    h1 {
+      color: var(--purple);
+      margin-bottom: 0.25rem;
+    }
+
+    .meta {
+      color: var(--muted);
+      margin-top: 0;
+    }
+
+    .chapter {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 3px solid var(--gold);
+    }
+
+    .chapter h2 {
+      margin-bottom: 0.25rem;
+    }
+
+    .chapter-count {
+      color: var(--muted);
+      margin-top: 0;
+      font-size: 0.95rem;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1rem;
+      margin: 1rem 0;
+      background: #fff;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .thumb {
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--cream);
+    }
+
+    .no-image {
+      width: 120px;
+      height: 90px;
+      border-radius: 10px;
+      border: 1px dashed var(--border);
+      background: var(--cream);
+      color: var(--muted);
+      display: grid;
+      place-items: center;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+
+    h3 {
+      margin: 0 0 0.35rem;
+    }
+
+    .subtitle {
+      margin: 0 0 0.4rem;
+      color: var(--muted);
+    }
+
+    .date {
+      margin: 0 0 0.6rem;
+      font-weight: 650;
+      color: var(--ink);
+    }
+
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      font-size: 0.95rem;
+    }
+
+    a {
+      color: #0b5f88;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    .missing {
+      color: #9a3412;
+      font-weight: 650;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        margin: 1rem;
+      }
+
+      .card {
+        grid-template-columns: 1fr;
+      }
+
+      .thumb,
+      .no-image {
+        width: 100%;
+        height: 180px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>BTA Magazine Content Preview</h1>
+  <p class="meta">Preview generated from <code>articles.json</code> and chapter order from <code>chapters.articleIds</code>.</p>
+  <div id="app">Loading…</div>
+
+  <script>
+    const app = document.getElementById("app");
+
+    const escapeHtml = (value = "") =>
+      String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+    const normalizeImagePath = (filename = "") => {
+      const raw = String(filename || "").trim();
+      if (!raw) return "";
+      if (/^https?:\/\//i.test(raw)) return raw;
+
+      const cleaned = raw
+        .replace(/^public\//, "")
+        .replace(/^images\//, "")
+        .replace(/^\/+/, "");
+
+      return `./images/articles/${cleaned}`;
+    };
+
+    const normalizeMarkdownPath = (markdownPath = "") => {
+      const raw = String(markdownPath || "").trim();
+      if (!raw) return "";
+      return `./${raw.replace(/^content\//, "")}`;
+    };
+
+    const articleSharePath = (articleId = "") =>
+      `./share/${encodeURIComponent(articleId)}/`;
+
+    fetch("./articles.json")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Could not load articles.json: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        const chapters = data.chapters || [];
+        const articles = data.articles || [];
+        const byId = new Map(articles.map((article) => [article.id, article]));
+
+        app.innerHTML = chapters
+          .map((chapter) => {
+            const orderedArticleIds = chapter.articleIds || [];
+            const chapterArticles = orderedArticleIds
+              .map((id) => byId.get(id))
+              .filter(Boolean);
+
+            const cards = chapterArticles
+              .map((article) => {
+                const firstImage = Array.isArray(article.images) && article.images.length
+                  ? article.images[0]
+                  : null;
+                const imageUrl = firstImage ? normalizeImagePath(firstImage.filename) : "";
+                const markdownUrl = normalizeMarkdownPath(article.markdownPath);
+                const shareUrl = articleSharePath(article.id);
+
+                return `
+                  <article class="card">
+                    ${
+                      imageUrl
+                        ? `<img class="thumb" src="${escapeHtml(imageUrl)}" alt="${escapeHtml(firstImage.alt || article.title || "")}" loading="lazy" />`
+                        : `<div class="no-image">No image</div>`
+                    }
+                    <div>
+                      <h3>${escapeHtml(article.title || "Untitled")}</h3>
+                      <p class="subtitle"><em>${escapeHtml(article.subtitle || "")}</em></p>
+                      <p class="date">${article.date ? escapeHtml(article.date) : '<span class="missing">Missing date</span>'}</p>
+                      <div class="links">
+                        ${markdownUrl ? `<a href="${escapeHtml(markdownUrl)}">Open Markdown</a>` : ""}
+                        <a href="${escapeHtml(shareUrl)}">Open Share Page</a>
+                      </div>
+                    </div>
+                  </article>
+                `;
+              })
+              .join("");
+
+            return `
+              <section class="chapter">
+                <h2>${escapeHtml(chapter.title || "Untitled chapter")}</h2>
+                <p class="chapter-count">${chapterArticles.length} article${chapterArticles.length === 1 ? "" : "s"}</p>
+                ${cards}
+              </section>
+            `;
+          })
+          .join("");
+      })
+      .catch((error) => {
+        app.innerHTML = `<p class="missing">${escapeHtml(error.message)}</p>`;
+      });
+  </script>
+</body>
+</html>
