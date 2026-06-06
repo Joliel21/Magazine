@@ -9,29 +9,47 @@ const shareDir = path.join(publicDir, "share");
 const PUBLIC_MAGAZINE_URL =
   process.env.PUBLIC_MAGAZINE_URL || "https://joliel21.github.io/Magazine/";
 
-const BASE_RAW_URL =
-  process.env.BASE_RAW_URL ||
-  "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/";
+const PUBLIC_ASSET_URL =
+  process.env.PUBLIC_ASSET_URL || "https://joliel21.github.io/Magazine/";
+
+const SITE_NAME = "Breathtaking Awareness";
+const AUTHOR_NAME = "Jolie Lizana";
 
 const FALLBACK_IMAGE =
   process.env.FALLBACK_SHARE_IMAGE ||
-  `${BASE_RAW_URL}images/brand/BreathtakingAwareness_ContentsIcon.png`;
+  new URL("images/brand/BreathtakingAwareness_ContentsIcon.png", PUBLIC_ASSET_URL).toString();
+
+const PH_DEFAULT_IMAGE =
+  process.env.PH_DEFAULT_SHARE_IMAGE ||
+  new URL("images/articles/phlip-side/blessed.png", PUBLIC_ASSET_URL).toString();
 
 const ARTICLE_IMAGE_OVERRIDES = {
   "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed":
-    `${BASE_RAW_URL}images/articles/phlip-side/blessed.png`,
+    new URL("images/articles/phlip-side/blessed.png", PUBLIC_ASSET_URL).toString(),
   "tragically-blessed":
-    `${BASE_RAW_URL}images/articles/phlip-side/blessed.png`,
+    new URL("images/articles/phlip-side/blessed.png", PUBLIC_ASSET_URL).toString(),
   "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others":
-    `${BASE_RAW_URL}images/articles/phlip-side/How-to-explain.jpg`,
+    new URL("images/articles/phlip-side/How-to-explain.jpg", PUBLIC_ASSET_URL).toString(),
   "sticky-bras-are-good-for-the-heart":
-    `${BASE_RAW_URL}images/articles/phlip-side/Jolie-Flash-the-boobs.png`,
+    new URL("images/articles/phlip-side/Jolie-Flash-the-boobs.png", PUBLIC_ASSET_URL).toString(),
   "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport":
-    `${BASE_RAW_URL}images/articles/phlip-side/Symposium.jpg`,
+    new URL("images/articles/phlip-side/Symposium.jpg", PUBLIC_ASSET_URL).toString(),
   "the-weight-of-staying-well":
-    `${BASE_RAW_URL}images/articles/scleroderma-foundation-of-greater-chicago/the_weight_of_staying_well_8x11_5.jpg`,
+    new URL("images/articles/scleroderma-foundation-of-greater-chicago/the_weight_of_staying_well_8x11_5.jpg", PUBLIC_ASSET_URL).toString(),
   "the_weight_of_staying_well":
-    `${BASE_RAW_URL}images/articles/scleroderma-foundation-of-greater-chicago/the_weight_of_staying_well_8x11_5.jpg`,
+    new URL("images/articles/scleroderma-foundation-of-greater-chicago/the_weight_of_staying_well_8x11_5.jpg", PUBLIC_ASSET_URL).toString(),
+};
+
+const ARTICLE_DATE_OVERRIDES = {
+  "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed": "2025-07-11",
+  "tragically-blessed": "2025-07-11",
+  "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss": "2025-07-25",
+  "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph": "2025-08-01",
+  "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension": "2025-08-15",
+  "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side": "2025-10-03",
+  "sticky-bras-are-good-for-the-heart": "2025-09-12",
+  "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport": "2025-09-26",
+  "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others": "2026-01-30",
 };
 
 const normalizeArticleKey = (value = "") =>
@@ -64,13 +82,19 @@ const stripMarkdown = (value = "") =>
     .replace(/\s+/g, " ")
     .trim();
 
-const toAbsoluteUrl = (value = "") => {
+const normalizeAssetPath = (value = "") =>
+  String(value || "")
+    .trim()
+    .replace(/^public\//, "")
+    .replace(/^\/+/, "");
+
+const toPublicAssetUrl = (value = "") => {
   const raw = String(value || "").trim();
   if (!raw) return "";
   if (/^https?:\/\//i.test(raw)) return raw;
-  if (raw.startsWith("/")) return `${BASE_RAW_URL}${raw.replace(/^\/+/, "")}`;
-  if (raw.startsWith("public/")) return `${BASE_RAW_URL}${raw.replace(/^public\//, "")}`;
-  return `${BASE_RAW_URL}${raw}`;
+
+  const normalized = normalizeAssetPath(raw);
+  return new URL(normalized, PUBLIC_ASSET_URL).toString();
 };
 
 const getMarkdownFileText = (article) => {
@@ -79,7 +103,7 @@ const getMarkdownFileText = (article) => {
   const markdownPath = article.markdownPath || article.path || article.filename || "";
   if (!markdownPath) return "";
 
-  const normalizedPath = String(markdownPath).replace(/^public\//, "");
+  const normalizedPath = normalizeAssetPath(markdownPath);
   const fullPath = path.join(publicDir, normalizedPath);
 
   if (!fs.existsSync(fullPath)) return "";
@@ -101,6 +125,7 @@ const getFirstImageFromMarkdown = (markdown = "") => {
 const getArticleImage = (article, markdown) => {
   const idKey = normalizeArticleKey(article.id || "");
   const titleKey = normalizeArticleKey(article.title || "");
+  const chapterKey = normalizeArticleKey(article.chapter || article.chapterSlug || article.chapterTitle || "");
 
   if (ARTICLE_IMAGE_OVERRIDES[idKey]) return ARTICLE_IMAGE_OVERRIDES[idKey];
   if (ARTICLE_IMAGE_OVERRIDES[titleKey]) return ARTICLE_IMAGE_OVERRIDES[titleKey];
@@ -116,22 +141,97 @@ const getArticleImage = (article, markdown) => {
     imageRecord?.filename ||
     "";
 
-  return toAbsoluteUrl(imageValue) || FALLBACK_IMAGE;
+  const publicImage = toPublicAssetUrl(imageValue);
+  if (publicImage) return publicImage;
+
+  // LinkedIn needs an image. Use a PH-side fallback for PHlip-side pieces, then brand fallback.
+  if (chapterKey.includes("phlip") || chapterKey.includes("ph")) return PH_DEFAULT_IMAGE;
+  return FALLBACK_IMAGE;
 };
+
+const removeMetadataLines = (text = "") =>
+  String(text)
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .filter((line) => !/^by\s+jolie\s+lizana\b/i.test(line))
+    .filter((line) => !/^written\s+by\s+jolie\s+lizana\b/i.test(line))
+    .filter((line) => !/^publication\s+date\b/i.test(line))
+    .filter((line) => !/^(editorial|published|posted|updated)\s*(\||:|—|-)/i.test(line))
+    .filter((line) => !/^\*?\s*(editorial|published|posted|updated)\s*(\||:|—|-)/i.test(line))
+    .join("\n");
 
 const getArticleExcerpt = (article, markdown) => {
   const metadataExcerpt =
     article.excerpt || article.description || article.summary || article.subtitle || "";
 
-  const cleanedMarkdown = stripMarkdown(markdown)
+  const cleanedMarkdown = removeMetadataLines(markdown)
     .replace(article.title || "", "")
-    .replace(/^Editorial\s*\|?\s*[^.]*\.?/i, "")
-    .replace(/^Written by\s+[^.]*\.?/i, "")
     .trim();
 
-  const excerpt = stripMarkdown(metadataExcerpt) || cleanedMarkdown;
-  if (excerpt.length <= 165) return excerpt;
-  return `${excerpt.slice(0, 162).trim()}…`;
+  const markdownExcerpt = stripMarkdown(cleanedMarkdown)
+    .replace(/^by\s+jolie\s+lizana\b.*?---\s*/i, "")
+    .replace(/^publication\s+date\b.*?---\s*/i, "")
+    .replace(/^editorial\b.*?---\s*/i, "")
+    .trim();
+
+  let excerpt = stripMarkdown(metadataExcerpt) || markdownExcerpt;
+
+  // LinkedIn warns below 100 characters. If the deck/subtitle is short, append the
+  // beginning of the body text so the outward-facing card has enough context.
+  if (excerpt.length < 100 && markdownExcerpt) {
+    const combined = `${excerpt}. ${markdownExcerpt}`.replace(/\.\s*\./g, ".");
+    excerpt = combined.trim();
+  }
+
+  if (!excerpt) {
+    excerpt = "A Breathtaking Awareness writing by Jolie Lizana on advocacy, chronic illness, and lived experience.";
+  }
+
+  if (excerpt.length <= 180) return excerpt;
+  return `${excerpt.slice(0, 177).trim()}…`;
+};
+
+const getPublishedDate = (article, markdown) => {
+  const idKey = normalizeArticleKey(article.id || "");
+  const titleKey = normalizeArticleKey(article.title || "");
+
+  if (ARTICLE_DATE_OVERRIDES[idKey]) return ARTICLE_DATE_OVERRIDES[idKey];
+  if (ARTICLE_DATE_OVERRIDES[titleKey]) return ARTICLE_DATE_OVERRIDES[titleKey];
+
+  const source = [
+    article.date,
+    article.publishedDate,
+    article.publishDate,
+    article.publicationDate,
+    markdown,
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const isoMatch = source.match(/\b\d{4}-\d{2}-\d{2}\b/);
+  if (isoMatch?.[0]) return isoMatch[0];
+
+  const monthMatch = source.match(
+    /\b(?:January|February|March|April|May|June|July|August|Aug\.|September|Sept\.|October|November|December)\s+\d{1,2},\s+\d{4}\b/i,
+  );
+  if (monthMatch?.[0]) {
+    const normalized = monthMatch[0]
+      .replace(/^Aug\./i, "August")
+      .replace(/^Sept\./i, "September");
+    const parsed = Date.parse(normalized);
+    if (!Number.isNaN(parsed)) return new Date(parsed).toISOString().slice(0, 10);
+  }
+
+  return "";
+};
+
+const toIsoPublishedTime = (date = "") => {
+  if (!date) return "";
+  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return `${date}T00:00:00Z`;
+  const parsed = Date.parse(date);
+  if (Number.isNaN(parsed)) return "";
+  return new Date(parsed).toISOString();
 };
 
 const readArticles = () => {
@@ -143,7 +243,10 @@ const readArticles = () => {
   return Array.isArray(raw) ? raw : raw.articles || [];
 };
 
-const renderShareHtml = ({ id, title, excerpt, imageUrl, shareUrl, magazineUrl }) => `<!doctype html>
+const renderShareHtml = ({ title, excerpt, imageUrl, shareUrl, magazineUrl, publishedDate }) => {
+  const publishedTime = toIsoPublishedTime(publishedDate);
+
+  return `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
@@ -151,13 +254,20 @@ const renderShareHtml = ({ id, title, excerpt, imageUrl, shareUrl, magazineUrl }
 
   <title>${escapeHtml(title)}</title>
   <meta name="description" content="${escapeHtml(excerpt)}" />
+  <meta name="author" content="${escapeHtml(AUTHOR_NAME)}" />
 
   <meta property="og:type" content="article" />
   <meta property="og:title" content="${escapeHtml(title)}" />
   <meta property="og:description" content="${escapeHtml(excerpt)}" />
   <meta property="og:image" content="${escapeHtml(imageUrl)}" />
+  <meta property="og:image:secure_url" content="${escapeHtml(imageUrl)}" />
+  <meta property="og:image:alt" content="${escapeHtml(title)}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
   <meta property="og:url" content="${escapeHtml(shareUrl)}" />
-  <meta property="og:site_name" content="Breathtaking Awareness" />
+  <meta property="og:site_name" content="${escapeHtml(SITE_NAME)}" />
+  <meta property="article:author" content="${escapeHtml(AUTHOR_NAME)}" />
+  ${publishedTime ? `<meta property="article:published_time" content="${escapeHtml(publishedTime)}" />` : ""}
 
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${escapeHtml(title)}" />
@@ -165,7 +275,7 @@ const renderShareHtml = ({ id, title, excerpt, imageUrl, shareUrl, magazineUrl }
   <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
 
   <link rel="canonical" href="${escapeHtml(shareUrl)}" />
-  <meta http-equiv="refresh" content="0; url=${escapeHtml(magazineUrl)}" />
+  <meta http-equiv="refresh" content="1; url=${escapeHtml(magazineUrl)}" />
 
   <style>
     body {
@@ -212,8 +322,8 @@ const renderShareHtml = ({ id, title, excerpt, imageUrl, shareUrl, magazineUrl }
     <p><a href="${escapeHtml(magazineUrl)}">Open this writing in the magazine</a></p>
   </main>
 </body>
-</html>
-`;
+</html>`;
+};
 
 const generateSharePages = () => {
   const articles = readArticles();
@@ -223,10 +333,11 @@ const generateSharePages = () => {
     const id = normalizeArticleKey(article.id || article.title || "");
     if (!id) continue;
 
-    const title = article.title || "Breathtaking Awareness";
+    const title = article.title || SITE_NAME;
     const markdown = getMarkdownFileText(article);
     const excerpt = getArticleExcerpt(article, markdown);
     const imageUrl = getArticleImage(article, markdown);
+    const publishedDate = getPublishedDate(article, markdown);
     const shareUrl = new URL(`share/${id}/`, PUBLIC_MAGAZINE_URL).toString();
     const magazineUrl = new URL(`?article=${encodeURIComponent(id)}`, PUBLIC_MAGAZINE_URL).toString();
 
@@ -235,14 +346,14 @@ const generateSharePages = () => {
 
     fs.writeFileSync(
       path.join(articleShareDir, "index.html"),
-      renderShareHtml({ id, title, excerpt, imageUrl, shareUrl, magazineUrl }),
+      renderShareHtml({ title, excerpt, imageUrl, shareUrl, magazineUrl, publishedDate }),
       "utf8",
     );
   }
 
   fs.writeFileSync(
     path.join(shareDir, "index.html"),
-    `<!doctype html><html><head><meta charset="utf-8"><title>Breathtaking Awareness</title><meta http-equiv="refresh" content="0; url=${PUBLIC_MAGAZINE_URL}"></head><body><a href="${PUBLIC_MAGAZINE_URL}">Open Breathtaking Awareness</a></body></html>`,
+    `<!doctype html><html><head><meta charset="utf-8"><title>${SITE_NAME}</title><meta name="description" content="A collected volume of advocacy, reflection, education, and lived experience."><meta name="author" content="${AUTHOR_NAME}"><meta property="og:title" content="${SITE_NAME}"><meta property="og:description" content="A collected volume of advocacy, reflection, education, and lived experience."><meta property="og:image" content="${FALLBACK_IMAGE}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="${new URL("share/", PUBLIC_MAGAZINE_URL).toString()}"><meta http-equiv="refresh" content="0; url=${PUBLIC_MAGAZINE_URL}"></head><body><a href="${PUBLIC_MAGAZINE_URL}">Open ${SITE_NAME}</a></body></html>`,
     "utf8",
   );
 
