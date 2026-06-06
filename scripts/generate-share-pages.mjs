@@ -220,7 +220,7 @@ const getPublishedDate = (article, markdown) => {
   const titleKey = normalizeArticleKey(article.title || "");
 
   if (ARTICLE_DATE_OVERRIDES[idKey]) return ARTICLE_DATE_OVERRIDES[idKey];
-  if (ARTICLE_DATE_OVERRIDES[titleKey]) return ARTICLE_DATE_OVERRIDES[titleKey];
+  if (ARTICLE_DATE_OVERRIDES[titleKey]) return ARTICLE_DATE_OVERRIDES[titleKey]; 
 
   const source = [
     article.date,
