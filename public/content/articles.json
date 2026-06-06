@@ -1,28 +1,31 @@
 {
   "publication": "BTA Magazine",
   "brand": "Breathtaking Awareness",
-  "version": "2026-06-03-content-package-with-images-v15",
+  "version": "2026-06-03-content-package-with-images-v16",
   "chapters": [
     {
       "title": "The PHlip-side",
       "slug": "the-phlip-side",
-      "count": 15,
+      "count": 18,
       "articleIds": [
-        "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed",
-        "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss",
-        "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph",
-        "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension",
-        "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side",
-        "the-high-cost-of-time-spent-managing-a-chronic-illness",
-        "advocating-for-the-ph-community-is-meaningful-work-it-helps-me-too",
-        "being-mindful-of-good-moments-helps-me-through-difficult-times",
-        "when-coexisting-conditions-complicate-our-health-strategy",
-        "grieving-the-mom-i-used-to-be-before-ph-entered-my-life",
-        "how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds",
-        "legislative-advocacy-can-make-a-difference-for-ph-care",
-        "im-learning-how-to-live-fully-not-just-survive-with-pulmonary-hypertension",
+        "i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension",
         "finding-confidence-community-and-care-at-specially-tailored-camps",
-        "i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension"
+        "im-learning-how-to-live-fully-not-just-survive-with-pulmonary-hypertension",
+        "legislative-advocacy-can-make-a-difference-for-ph-care",
+        "how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds",
+        "grieving-the-mom-i-used-to-be-before-ph-entered-my-life",
+        "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others",
+        "when-coexisting-conditions-complicate-our-health-strategy",
+        "being-mindful-of-good-moments-helps-me-through-difficult-times",
+        "advocating-for-the-ph-community-is-meaningful-work-it-helps-me-too",
+        "the-high-cost-of-time-spent-managing-a-chronic-illness",
+        "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side",
+        "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport",
+        "sticky-bras-are-good-for-the-heart",
+        "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension",
+        "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph",
+        "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss",
+        "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed"
       ]
     },
     {
@@ -59,199 +62,50 @@
   ],
   "articles": [
     {
-      "id": "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed",
+      "id": "i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension",
       "chapter": "The PHlip-side",
       "chapterSlug": "the-phlip-side",
-      "title": "Since my pulmonary hypertension diagnosis, I’m tragically blessed",
-      "subtitle": "In her debut, a new columnist learns of her disease and takes the next steps",
-      "date": "",
+      "title": "I learn a hard lesson about traveling with pulmonary hypertension",
+      "subtitle": "I took a trip to advocate for others, but was reminded to self-advocate, too",
+      "date": "May 29, 2026",
       "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed.md",
+      "markdownPath": "content/articles/the-phlip-side/i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension.md",
       "images": [
         {
-          "filename": "phlip-side/blessed.png",
-          "caption": "A flier of sorts introduces Jolie Lizana, a new columnist for Pulmonary Hypertension News, and her son, Zaylan. (Image by: Jolie Lizana)",
-          "alt": "A flyer introducing Jolie Lizana, a PH columnist, with two photos: one of Jolie and her son Zaylan at a school event, and another of them at the U.S. Capitol."
+          "filename": "phlip-side/traveling-with-ph-capitol-steps.jpg",
+          "caption": "Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)",
+          "alt": "A woman stands in front of the steps of the U.S. Capitol building."
         }
       ],
       "status": "ready"
     },
     {
-      "id": "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss",
+      "id": "finding-confidence-community-and-care-at-specially-tailored-camps",
       "chapter": "The PHlip-side",
       "chapterSlug": "the-phlip-side",
-      "title": "My delayed PH diagnosis reveals a lesson in claiming victory over loss",
-      "subtitle": "I wonder what could’ve been had I refused to accept ‘no’ as an answer",
-      "date": "",
+      "title": "Finding confidence, community, and care at specially tailored camps",
+      "subtitle": "Camp del Corazon and others are for children with complex health conditions",
+      "date": "May 15, 2026",
       "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss.md",
-      "images": [
-        {
-          "filename": "phlip-side/claiming-victory-columnist-graphic.jpg",
-          "caption": "Columnist (Graphic by Jolie Lizana)",
-          "alt": "Jolie is wearing glasses and a coral shirt, resting her chin on her hand and looking thoughtful. The background is an illustrated sky with fluffy white clouds."
-        }
-      ],
-      "status": "ready"
+      "markdownPath": "content/articles/the-phlip-side/finding-confidence-community-and-care-at-specially-tailored-camps.md",
+      "images": [],
+      "status": "ready",
+      "imageStatus": "no image provided"
     },
     {
-      "id": "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph",
+      "id": "im-learning-how-to-live-fully-not-just-survive-with-pulmonary-hypertension",
       "chapter": "The PHlip-side",
       "chapterSlug": "the-phlip-side",
-      "title": "The Pandora’s box of making plans and managing friendships with PH",
-      "subtitle": "People stopped inviting me to things because of my unpredictable symptoms",
-      "date": "",
+      "title": "I’m learning how to live fully, not just survive, with pulmonary hypertension",
+      "subtitle": "Finding ways to keep moving forward, even within the limits of PH",
+      "date": "April 10, 2026",
       "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/the-pandoras-box-of-making-plans-and-managing-friendships-with-ph.md",
+      "markdownPath": "content/articles/the-phlip-side/im-learning-how-to-live-fully-not-just-survive-with-pulmonary-hypertension.md",
       "images": [
         {
-          "filename": "phlip-side/pandoras-box-window-rain.jpg",
-          "caption": "Columnist Jolie Lizana gazes out into the world. (Photo by Zaylan)",
-          "alt": "A person wrapped in a striped blanket sits on a window seat, gazing out of a large window on a rainy day."
-        }
-      ],
-      "status": "ready"
-    },
-    {
-      "id": "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "Why a day of rest is a victory with pulmonary hypertension",
-      "subtitle": "Moments to relax are not an option when every activity can be a struggle",
-      "date": "",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension.md",
-      "images": [
-        {
-          "filename": "phlip-side/rest-victory-reading.jpg",
-          "caption": "Columnist (Photo by: Jolie Lizana)",
-          "alt": "Jolie in polka dot top pajamas holds up and reads the book Stress-Free Productivity, partially covering her face in a softly lit room."
-        }
-      ],
-      "status": "ready"
-    },
-    {
-      "id": "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "Getting through the fog of grief to see clearly on the other side",
-      "subtitle": "Having pulmonary hypertension helped teach me what matters most in life",
-      "date": "",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side.md",
-      "images": [
-        {
-          "filename": "phlip-side/fog-of-grief-zaylan-apple-tree.jpg",
-          "caption": "In this photo from 2013, Jolie Lizana’s son, Zaylan, 5, smiles next to his painting of an apple tree. (Photo by Jolie Lizana)",
-          "alt": "A young boy in a white t-shirt smiles next to an easel displaying his colorful painting of a tree with red apples, green leaves, a blue sky, and a yellow sun."
-        }
-      ],
-      "status": "ready"
-    },
-    {
-      "id": "the-high-cost-of-time-spent-managing-a-chronic-illness",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "The high cost of time spent managing a chronic illness",
-      "subtitle": "Patients shouldn’t have to spend so much time on disease management",
-      "date": "October 24, 2025",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/the-high-cost-of-time-spent-managing-a-chronic-illness.md",
-      "images": [
-        {
-          "filename": "phlip-side/high-cost-phone-call.jpg",
-          "caption": "Living with a chronic, rare disease involves a lot of time on the phone. (Courtesy of Jolie Lizana)",
-          "alt": "A woman with glasses and dark hair, wearing a red patterned blouse and a smartwatch, sits on a black chair and talks on the phone."
-        }
-      ],
-      "status": "ready"
-    },
-    {
-      "id": "advocating-for-the-ph-community-is-meaningful-work-it-helps-me-too",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "Advocating for the PH community is meaningful work; it helps me too",
-      "subtitle": "Thank you for reminding me that I am enough",
-      "date": "November 14, 2025",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/advocating-for-the-ph-community-is-meaningful-work-it-helps-me-too.md",
-      "images": [
-        {
-          "filename": "phlip-side/advocating-ph-community-support-rare.jpg",
-          "caption": "A PH advocate finds hope in new research, anxiety at the airport.",
-          "alt": "A person holds a sign that reads “Breathtaking Awareness, We Support Rare!” with a sunflower and purple ribbon in front of the U.S. Capitol building on a sunny day."
-        }
-      ],
-      "status": "ready"
-    },
-    {
-      "id": "being-mindful-of-good-moments-helps-me-through-difficult-times",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "Being mindful of good moments helps me through difficult times",
-      "subtitle": "A ‘time capsule’ was an early mindfulness technique to recall good times in my life",
-      "date": "December 12, 2025",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/being-mindful-of-good-moments-helps-me-through-difficult-times.md",
-      "images": [
-        {
-          "filename": "phlip-side/mindful-good-moments-holiday.jpg",
-          "caption": "Jolie Lizana and her son share a holiday moment. (Courtesy of Jolie Lizana)",
-          "alt": "A smiling woman in glasses hugs a smiling teenage boy in front of a decorated fireplace with stockings, greenery, snowflakes, and a clock."
-        }
-      ],
-      "status": "ready"
-    },
-    {
-      "id": "when-coexisting-conditions-complicate-our-health-strategy",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "When coexisting conditions complicate our health strategy",
-      "subtitle": "In addition to PH, I must now face a possible scleroderma diagnosis",
-      "date": "January 16, 2026",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/when-coexisting-conditions-complicate-our-health-strategy.md",
-      "images": [
-        {
-          "filename": "phlip-side/coexisting-conditions-pumpkin-display.jpg",
-          "caption": "Jolie Lizana sits among a fall pumpkin display. (Courtesy of Jolie Lizana)",
-          "alt": "A woman sits cross-legged among a fall display of pumpkins, gourds, hay, and autumn leaves."
-        }
-      ],
-      "status": "ready"
-    },
-    {
-      "id": "grieving-the-mom-i-used-to-be-before-ph-entered-my-life",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "Grieving the mom I used to be before PH entered my life",
-      "subtitle": "It's hard not to notice the vast difference in my life then vs. now",
-      "date": "February 13, 2026",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/grieving-the-mom-i-used-to-be-before-ph-entered-my-life.md",
-      "images": [
-        {
-          "filename": "phlip-side/grieving-mom-state-park-2014.jpg",
-          "caption": "Jolie Lizana and her son, Zaylan, visit their local state park in 2014. (Courtesy of Jolie Lizana)",
-          "alt": "A woman squats down beside her son for a photo at their local state park. The boy is holding a stuffed tiger, and both are smiling at the camera."
-        }
-      ],
-      "status": "ready"
-    },
-    {
-      "id": "how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "How I transitioned from an IV therapy pump to oral meds",
-      "subtitle": "The pump saved my life, but I’m grateful to have transitioned off it",
-      "date": "February 27, 2026",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds.md",
-      "images": [
-        {
-          "filename": "phlip-side/iv-pump-to-oral-state-capitol-2025.jpg",
-          "caption": "Jolie Lizana 2025 at State Capitol (Courtesy of Jolie Lizana)",
-          "alt": "A woman wearing glasses, a purple blouse, and black pants stands smiling by a decorative black and gold railing on a staircase with cream-colored walls."
+          "filename": "phlip-side/live-fully-dc-mural.jpg",
+          "caption": "Columnist Jolie Lizana spends time in Washington, D.C., after a day of advocacy in March 2026. (Courtesy of Jolie Lizana)",
+          "alt": "A woman wearing a yellow top and blue slacks smiles for a photo in an outdoor walkway with a colorful mural and pink and purple lanterns."
         }
       ],
       "status": "ready"
@@ -275,50 +129,258 @@
       "status": "ready"
     },
     {
-      "id": "im-learning-how-to-live-fully-not-just-survive-with-pulmonary-hypertension",
+      "id": "how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds",
       "chapter": "The PHlip-side",
       "chapterSlug": "the-phlip-side",
-      "title": "I’m learning how to live fully, not just survive, with pulmonary hypertension",
-      "subtitle": "Finding ways to keep moving forward, even within the limits of PH",
-      "date": "April 10, 2026",
+      "title": "How I transitioned from an IV therapy pump to oral meds",
+      "subtitle": "The pump saved my life, but I’m grateful to have transitioned off it",
+      "date": "February 27, 2026",
       "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/im-learning-how-to-live-fully-not-just-survive-with-pulmonary-hypertension.md",
+      "markdownPath": "content/articles/the-phlip-side/how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds.md",
       "images": [
         {
-          "filename": "phlip-side/live-fully-dc-mural.jpg",
-          "caption": "Columnist Jolie Lizana spends time in Washington, D.C., after a day of advocacy in March 2026. (Courtesy of Jolie Lizana)",
-          "alt": "A woman wearing a yellow top and blue slacks smiles for a photo in an outdoor walkway with a colorful mural and pink and purple lanterns."
+          "filename": "phlip-side/iv-pump-to-oral-state-capitol-2025.jpg",
+          "caption": "Jolie Lizana 2025 at State Capitol (Courtesy of Jolie Lizana)",
+          "alt": "A woman wearing glasses, a purple blouse, and black pants stands smiling by a decorative black and gold railing on a staircase with cream-colored walls."
         }
       ],
       "status": "ready"
     },
     {
-      "id": "finding-confidence-community-and-care-at-specially-tailored-camps",
+      "id": "grieving-the-mom-i-used-to-be-before-ph-entered-my-life",
       "chapter": "The PHlip-side",
       "chapterSlug": "the-phlip-side",
-      "title": "Finding confidence, community, and care at specially tailored camps",
-      "subtitle": "Camp del Corazon and others are for children with complex health conditions",
-      "date": "May 15, 2026",
+      "title": "Grieving the mom I used to be before PH entered my life",
+      "subtitle": "It's hard not to notice the vast difference in my life then vs. now",
+      "date": "February 13, 2026",
       "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/finding-confidence-community-and-care-at-specially-tailored-camps.md",
-      "images": [],
-      "status": "ready",
-      "imageStatus": "no image provided"
-    },
-    {
-      "id": "i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension",
-      "chapter": "The PHlip-side",
-      "chapterSlug": "the-phlip-side",
-      "title": "I learn a hard lesson about traveling with pulmonary hypertension",
-      "subtitle": "I took a trip to advocate for others, but was reminded to self-advocate, too",
-      "date": "May 29, 2026",
-      "byline": "Jolie Lizana",
-      "markdownPath": "content/articles/the-phlip-side/i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension.md",
+      "markdownPath": "content/articles/the-phlip-side/grieving-the-mom-i-used-to-be-before-ph-entered-my-life.md",
       "images": [
         {
-          "filename": "phlip-side/traveling-with-ph-capitol-steps.jpg",
-          "caption": "Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)",
-          "alt": "A woman stands in front of the steps of the U.S. Capitol building."
+          "filename": "phlip-side/grieving-mom-state-park-2014.jpg",
+          "caption": "Jolie Lizana and her son, Zaylan, visit their local state park in 2014. (Courtesy of Jolie Lizana)",
+          "alt": "A woman squats down beside her son for a photo at their local state park. The boy is holding a stuffed tiger, and both are smiling at the camera."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "How to explain the complexities of pulmonary hypertension to others",
+      "subtitle": "Understanding what's happening in our bodies can help us be better advocates",
+      "date": "January 30, 2026",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/how-to-explain-the-complexities-of-pulmonary-hypertension-to-others.md",
+      "images": [
+        {
+          "filename": "phlip-side/How-to-explain.jpg",
+          "caption": "Image paired with “How to explain the complexities of pulmonary hypertension to others.” (Courtesy of Jolie Lizana)",
+          "alt": "Image paired with Jolie Lizana’s article about explaining the complexities of pulmonary hypertension to others."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "when-coexisting-conditions-complicate-our-health-strategy",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "When coexisting conditions complicate our health strategy",
+      "subtitle": "In addition to PH, I must now face a possible scleroderma diagnosis",
+      "date": "January 16, 2026",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/when-coexisting-conditions-complicate-our-health-strategy.md",
+      "images": [
+        {
+          "filename": "phlip-side/coexisting-conditions-pumpkin-display.jpg",
+          "caption": "Jolie Lizana sits among a fall pumpkin display. (Courtesy of Jolie Lizana)",
+          "alt": "A woman sits cross-legged among a fall display of pumpkins, gourds, hay, and autumn leaves."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "being-mindful-of-good-moments-helps-me-through-difficult-times",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "Being mindful of good moments helps me through difficult times",
+      "subtitle": "A ‘time capsule’ was an early mindfulness technique to recall good times in my life",
+      "date": "December 12, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/being-mindful-of-good-moments-helps-me-through-difficult-times.md",
+      "images": [
+        {
+          "filename": "phlip-side/mindful-good-moments-holiday.jpg",
+          "caption": "Jolie Lizana and her son share a holiday moment. (Courtesy of Jolie Lizana)",
+          "alt": "A smiling woman in glasses hugs a smiling teenage boy in front of a decorated fireplace with stockings, greenery, snowflakes, and a clock."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "advocating-for-the-ph-community-is-meaningful-work-it-helps-me-too",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "Advocating for the PH community is meaningful work; it helps me too",
+      "subtitle": "Thank you for reminding me that I am enough",
+      "date": "November 14, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/advocating-for-the-ph-community-is-meaningful-work-it-helps-me-too.md",
+      "images": [
+        {
+          "filename": "phlip-side/advocating-ph-community-support-rare.jpg",
+          "caption": "A PH advocate finds hope in new research, anxiety at the airport.",
+          "alt": "A person holds a sign that reads “Breathtaking Awareness, We Support Rare!” with a sunflower and purple ribbon in front of the U.S. Capitol building on a sunny day."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "the-high-cost-of-time-spent-managing-a-chronic-illness",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "The high cost of time spent managing a chronic illness",
+      "subtitle": "Patients shouldn’t have to spend so much time on disease management",
+      "date": "October 24, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/the-high-cost-of-time-spent-managing-a-chronic-illness.md",
+      "images": [
+        {
+          "filename": "phlip-side/high-cost-phone-call.jpg",
+          "caption": "Living with a chronic, rare disease involves a lot of time on the phone. (Courtesy of Jolie Lizana)",
+          "alt": "A woman with glasses and dark hair, wearing a red patterned blouse and a smartwatch, sits on a black chair and talks on the phone."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "Getting through the fog of grief to see clearly on the other side",
+      "subtitle": "Having pulmonary hypertension helped teach me what matters most in life",
+      "date": "October 3, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side.md",
+      "images": [
+        {
+          "filename": "phlip-side/fog-of-grief-zaylan-apple-tree.jpg",
+          "caption": "In this photo from 2013, Jolie Lizana’s son, Zaylan, 5, smiles next to his painting of an apple tree. (Photo by Jolie Lizana)",
+          "alt": "A young boy in a white t-shirt smiles next to an easel displaying his colorful painting of a tree with red apples, green leaves, a blue sky, and a yellow sun."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "A PH advocate finds hope in new research, anxiety at the airport",
+      "subtitle": "Time at pulmonary hypertension symposium gave me a lot to think about",
+      "date": "September 26, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport.md",
+      "images": [
+        {
+          "filename": "phlip-side/Symposium.jpg",
+          "caption": "Image paired with “A PH advocate finds hope in new research, anxiety at the airport.” (Courtesy of Jolie Lizana)",
+          "alt": "Image paired with Jolie Lizana’s article about a pulmonary hypertension symposium and airport anxiety."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "sticky-bras-are-good-for-the-heart",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "Sticky bras are good for the heart",
+      "subtitle": "The clothing choice that makes it easier for women to get emergency care",
+      "date": "September 12, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/sticky-bras-are-good-for-the-heart.md",
+      "images": [
+        {
+          "filename": "phlip-side/Jolie-Flash-the-boobs.png",
+          "caption": "Image paired with “Sticky bras are good for the heart.” (Courtesy of Jolie Lizana)",
+          "alt": "Image paired with Jolie Lizana’s article about sticky bras and emergency heart care access."
+        },
+        {
+          "filename": "phlip-side/Nippies.png",
+          "caption": "Nippies image paired with “Sticky bras are good for the heart.” (Courtesy of Jolie Lizana)",
+          "alt": "Image of Nippies sticky bra product referenced in the article."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "Why a day of rest is a victory with pulmonary hypertension",
+      "subtitle": "Moments to relax are not an option when every activity can be a struggle",
+      "date": "August 15, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension.md",
+      "images": [
+        {
+          "filename": "phlip-side/rest-victory-reading.jpg",
+          "caption": "Columnist (Photo by: Jolie Lizana)",
+          "alt": "Jolie in polka dot top pajamas holds up and reads the book Stress-Free Productivity, partially covering her face in a softly lit room."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "The Pandora’s box of making plans and managing friendships with PH",
+      "subtitle": "People stopped inviting me to things because of my unpredictable symptoms",
+      "date": "August 1, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/the-pandoras-box-of-making-plans-and-managing-friendships-with-ph.md",
+      "images": [
+        {
+          "filename": "phlip-side/pandoras-box-window-rain.jpg",
+          "caption": "Columnist Jolie Lizana gazes out into the world. (Photo by Zaylan)",
+          "alt": "A person wrapped in a striped blanket sits on a window seat, gazing out of a large window on a rainy day."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "My delayed PH diagnosis reveals a lesson in claiming victory over loss",
+      "subtitle": "I wonder what could’ve been had I refused to accept ‘no’ as an answer",
+      "date": "July 25, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss.md",
+      "images": [
+        {
+          "filename": "phlip-side/claiming-victory-columnist-graphic.jpg",
+          "caption": "Columnist (Graphic by Jolie Lizana)",
+          "alt": "Jolie is wearing glasses and a coral shirt, resting her chin on her hand and looking thoughtful. The background is an illustrated sky with fluffy white clouds."
+        }
+      ],
+      "status": "ready"
+    },
+    {
+      "id": "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "Since my pulmonary hypertension diagnosis, I’m tragically blessed",
+      "subtitle": "In her debut, a new columnist learns of her disease and takes the next steps",
+      "date": "July 11, 2025",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed.md",
+      "images": [
+        {
+          "filename": "phlip-side/blessed.png",
+          "caption": "A flier of sorts introduces Jolie Lizana, a new columnist for Pulmonary Hypertension News, and her son, Zaylan. (Image by: Jolie Lizana)",
+          "alt": "A flyer introducing Jolie Lizana, a PH columnist, with two photos: one of Jolie and her son Zaylan at a school event, and another of them at the U.S. Capitol."
         }
       ],
       "status": "ready"
