@@ -24,25 +24,55 @@ const FALLBACK_IMAGE =
 
 const ARTICLE_IMAGE_OVERRIDES = {
   "since-my-pulmonary-hypertension-diagnosis-im-tragically-blessed":
-    new URL("images/articles/phlip-side/blessed.png", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/phlip-side/blessed.png",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "tragically-blessed":
-    new URL("images/articles/phlip-side/blessed.png", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/phlip-side/blessed.png",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension":
-    new URL("images/articles/phlip-side/rest-victory-reading.jpg", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/phlip-side/rest-victory-reading.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss":
-    new URL("images/articles/phlip-side/claiming-victory-columnist-graphic.jpg", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/phlip-side/claiming-victory-columnist-graphic.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph":
-    new URL("images/articles/phlip-side/pandoras-box-window-rain.jpg", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/phlip-side/pandoras-box-window-rain.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others":
-    new URL("images/articles/phlip-side/How-to-explain.jpg", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/phlip-side/How-to-explain.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "sticky-bras-are-good-for-the-heart":
-    new URL("images/articles/phlip-side/Jolie-Flash-the-boobs.png", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/phlip-side/Jolie-Flash-the-boobs.png",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport":
-    new URL("images/articles/phlip-side/Symposium.jpg", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/phlip-side/Symposium.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "the-weight-of-staying-well":
-    new URL("images/articles/scleroderma-foundation-of-greater-chicago/the_weight_of_staying_well_8x11_5.jpg", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/scleroderma-foundation-of-greater-chicago/the_weight_of_staying_well_8x11_5.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "the_weight_of_staying_well":
-    new URL("images/articles/scleroderma-foundation-of-greater-chicago/the_weight_of_staying_well_8x11_5.jpg", PUBLIC_ASSET_URL).toString(),
+    new URL(
+      "images/articles/scleroderma-foundation-of-greater-chicago/the_weight_of_staying_well_8x11_5.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
 };
 
 const ARTICLE_DATE_OVERRIDES = {
@@ -82,7 +112,11 @@ const normalizeAssetPath = (value = "") => {
 
   // articles.json usually stores filenames like "phlip-side/image.jpg".
   // Public URL must be "images/articles/phlip-side/image.jpg".
-  if (/^(phlip-side|scleroderma-foundation-of-greater-chicago|rants-of-the-psyche|tips-tricks)\//i.test(raw)) {
+  if (
+    /^(phlip-side|scleroderma-foundation-of-greater-chicago|rants-of-the-psyche|tips-tricks)\//i.test(
+      raw,
+    )
+  ) {
     return `images/articles/${raw}`;
   }
 
@@ -104,7 +138,8 @@ const toPublicAssetUrl = (value = "") => {
 const getMarkdownFileText = (article) => {
   if (article.markdownContent) return String(article.markdownContent);
 
-  const markdownPath = article.markdownPath || article.path || article.filename || "";
+  const markdownPath =
+    article.markdownPath || article.path || article.filename || "";
   if (!markdownPath) return "";
 
   const normalizedPath = String(markdownPath)
@@ -120,7 +155,10 @@ const getMarkdownFileText = (article) => {
 const removeImageAndCaptionBlocks = (value = "") =>
   String(value)
     .replace(/!\[[^\]]*?\]\([^)]+?\)/g, "")
-    .replace(/<!--\s*BTA_IMAGE_START\s*-->[\s\S]*?<!--\s*BTA_IMAGE_END\s*-->/gi, "")
+    .replace(
+      /<!--\s*BTA_IMAGE_START\s*-->[\s\S]*?<!--\s*BTA_IMAGE_END\s*-->/gi,
+      "",
+    )
     .replace(/Image\/caption placement[\s\S]*?(?=\n\s*\n|$)/gi, "")
     .replace(/^Image(?:\s+\d+)?:.*$/gim, "")
     .replace(/^Caption(?:\s+\d+)?:.*$/gim, "")
@@ -186,7 +224,11 @@ const removeMetadataLines = (text = "") =>
 
 const getArticleExcerpt = (article, markdown) => {
   const metadataExcerpt =
-    article.excerpt || article.description || article.summary || article.subtitle || "";
+    article.excerpt ||
+    article.description ||
+    article.summary ||
+    article.subtitle ||
+    "";
 
   const cleanedMarkdown = removeMetadataLines(markdown)
     .replace(article.title || "", "")
@@ -208,7 +250,8 @@ const getArticleExcerpt = (article, markdown) => {
   }
 
   if (!excerpt) {
-    excerpt = "A Breathtaking Awareness writing by Jolie Lizana on advocacy, chronic illness, and lived experience.";
+    excerpt =
+      "A Breathtaking Awareness writing by Jolie Lizana on advocacy, chronic illness, and lived experience.";
   }
 
   if (excerpt.length <= 180) return excerpt;
@@ -220,7 +263,7 @@ const getPublishedDate = (article, markdown) => {
   const titleKey = normalizeArticleKey(article.title || "");
 
   if (ARTICLE_DATE_OVERRIDES[idKey]) return ARTICLE_DATE_OVERRIDES[idKey];
-  if (ARTICLE_DATE_OVERRIDES[titleKey]) return ARTICLE_DATE_OVERRIDES[titleKey]; 
+  if (ARTICLE_DATE_OVERRIDES[titleKey]) return ARTICLE_DATE_OVERRIDES[titleKey];
 
   const source = [
     article.date,
@@ -243,7 +286,9 @@ const getPublishedDate = (article, markdown) => {
       .replace(/^Aug\./i, "August")
       .replace(/^Sept\./i, "September");
     const parsed = Date.parse(normalized);
-    if (!Number.isNaN(parsed)) return new Date(parsed).toISOString().slice(0, 10);
+    if (!Number.isNaN(parsed)) {
+      return new Date(parsed).toISOString().slice(0, 10);
+    }
   }
 
   return "";
@@ -251,7 +296,12 @@ const getPublishedDate = (article, markdown) => {
 
 const toIsoPublishedTime = (date = "") => {
   if (!date) return "";
-if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return `${date}T12:00:00Z`;  const parsed = Date.parse(date);
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return `${date}T12:00:00Z`;
+  }
+
+  const parsed = Date.parse(date);
   if (Number.isNaN(parsed)) return "";
   return new Date(parsed).toISOString();
 };
@@ -265,7 +315,14 @@ const readArticles = () => {
   return Array.isArray(raw) ? raw : raw.articles || [];
 };
 
-const renderShareHtml = ({ title, excerpt, imageUrl, shareUrl, magazineUrl, publishedDate }) => {
+const renderShareHtml = ({
+  title,
+  excerpt,
+  imageUrl,
+  shareUrl,
+  magazineUrl,
+  publishedDate,
+}) => {
   const publishedTime = toIsoPublishedTime(publishedDate);
 
   return `<!doctype html>
@@ -361,14 +418,24 @@ const generateSharePages = () => {
     const imageUrl = getArticleImage(article, markdown);
     const publishedDate = getPublishedDate(article, markdown);
     const shareUrl = new URL(`share/${id}/`, PUBLIC_MAGAZINE_URL).toString();
-    const magazineUrl = new URL(`?article=${encodeURIComponent(id)}`, PUBLIC_MAGAZINE_URL).toString();
+    const magazineUrl = new URL(
+      `?article=${encodeURIComponent(id)}`,
+      PUBLIC_MAGAZINE_URL,
+    ).toString();
 
     const articleShareDir = path.join(shareDir, id);
     fs.mkdirSync(articleShareDir, { recursive: true });
 
     fs.writeFileSync(
       path.join(articleShareDir, "index.html"),
-      renderShareHtml({ title, excerpt, imageUrl, shareUrl, magazineUrl, publishedDate }),
+      renderShareHtml({
+        title,
+        excerpt,
+        imageUrl,
+        shareUrl,
+        magazineUrl,
+        publishedDate,
+      }),
       "utf8",
     );
   }
