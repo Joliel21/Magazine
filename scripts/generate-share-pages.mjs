@@ -251,8 +251,7 @@ const getPublishedDate = (article, markdown) => {
 
 const toIsoPublishedTime = (date = "") => {
   if (!date) return "";
-  if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return `${date}T00:00:00Z`;
-  const parsed = Date.parse(date);
+if (/^\d{4}-\d{2}-\d{2}$/.test(date)) return `${date}T12:00:00Z`;  const parsed = Date.parse(date);
   if (Number.isNaN(parsed)) return "";
   return new Date(parsed).toISOString();
 };
