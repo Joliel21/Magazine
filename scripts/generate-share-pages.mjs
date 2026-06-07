@@ -108,6 +108,11 @@ const ARTICLE_IMAGE_OVERRIDES = {
       "images/articles/phlip-side/Jolie-Flash-the-boobs.png",
       PUBLIC_ASSET_URL,
     ).toString(),
+  "how-flashing-the-boobs-is-helping-to-save-womens-lives":
+    new URL(
+      "images/articles/phlip-side/Jolie-Flash-the-boobs.png",
+      PUBLIC_ASSET_URL,
+    ).toString(),
   "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport":
     new URL(
       "images/articles/phlip-side/Symposium.jpg",
