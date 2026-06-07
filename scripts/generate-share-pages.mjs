@@ -404,7 +404,6 @@ const renderShareHtml = ({
   <meta name="twitter:image" content="${escapeHtml(imageUrl)}" />
 
   <link rel="canonical" href="${escapeHtml(shareUrl)}" />
-  <meta http-equiv="refresh" content="1; url=${escapeHtml(magazineUrl)}" />
 
   <style>
     body {
@@ -448,6 +447,7 @@ const renderShareHtml = ({
     <img src="${escapeHtml(imageUrl)}" alt="" />
     <h1>${escapeHtml(title)}</h1>
     <p>${escapeHtml(excerpt)}</p>
+    <p>This share preview page is here so social platforms can read the title, image, and description.</p>
     <p><a href="${escapeHtml(magazineUrl)}">Open this writing in the magazine</a></p>
   </main>
 </body>
@@ -492,7 +492,7 @@ const generateSharePages = () => {
 
   fs.writeFileSync(
     path.join(shareDir, "index.html"),
-    `<!doctype html><html><head><meta charset="utf-8"><title>${SITE_NAME}</title><meta name="description" content="A collected volume of advocacy, reflection, education, and lived experience."><meta name="author" content="${AUTHOR_NAME}"><meta property="og:title" content="${SITE_NAME}"><meta property="og:description" content="A collected volume of advocacy, reflection, education, and lived experience."><meta property="og:image" content="${FALLBACK_IMAGE}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="${new URL("share/", PUBLIC_MAGAZINE_URL).toString()}"><meta http-equiv="refresh" content="0; url=${PUBLIC_MAGAZINE_URL}"></head><body><a href="${PUBLIC_MAGAZINE_URL}">Open ${SITE_NAME}</a></body></html>`,
+    `<!doctype html><html><head><meta charset="utf-8"><title>${SITE_NAME}</title><meta name="description" content="A collected volume of advocacy, reflection, education, and lived experience."><meta name="author" content="${AUTHOR_NAME}"><meta property="og:title" content="${SITE_NAME}"><meta property="og:description" content="A collected volume of advocacy, reflection, education, and lived experience."><meta property="og:image" content="${FALLBACK_IMAGE}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:url" content="${new URL("share/", PUBLIC_MAGAZINE_URL).toString()}"></head><body><a href="${PUBLIC_MAGAZINE_URL}">Open ${SITE_NAME}</a></body></html>`,
     "utf8",
   );
 
