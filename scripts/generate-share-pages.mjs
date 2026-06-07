@@ -95,7 +95,7 @@ const ARTICLE_IMAGE_OVERRIDES = {
     ).toString(),
   "i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension":
     new URL(
-      "images/articles/phlip-side/learned-a-hard-lesson.jpg",
+      "images/articles/phlip-side/learned-a-hard-lesson-share.jpg",
       PUBLIC_ASSET_URL,
     ).toString(),
   "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others":
