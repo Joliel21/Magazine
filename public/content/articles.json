@@ -70,13 +70,13 @@
       "date": "May 29, 2026",
       "byline": "Jolie Lizana",
       "markdownPath": "content/articles/the-phlip-side/i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension.md",
-     "images": [
-  {
-    "filename": "phlip-side/learned-a-hard-lesson.jpg",
-    "caption": "Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)",
-    "alt": "A woman stands in front of the steps of the U.S. Capitol building."
-  }
-]
+      "images": [
+        {
+          "filename": "phlip-side/learned-a-hard-lesson.jpg",
+          "caption": "Jolie Lizana stands next to the steps of the U.S. Capitol during a recent trip to Washington D.C., to lobby on behalf of scleroderma patients. (Courtesy of Jolie Lizana)",
+          "alt": "A woman stands in front of the steps of the U.S. Capitol building."
+        }
+      ],
       "status": "ready"
     },
     {
