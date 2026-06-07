@@ -33,11 +33,6 @@ const ARTICLE_IMAGE_OVERRIDES = {
       "images/articles/phlip-side/blessed.png",
       PUBLIC_ASSET_URL,
     ).toString(),
-  "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension":
-    new URL(
-      "images/articles/phlip-side/rest-victory-reading.jpg",
-      PUBLIC_ASSET_URL,
-    ).toString(),
   "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss":
     new URL(
       "images/articles/phlip-side/claiming-victory-columnist-graphic.jpg",
@@ -46,6 +41,61 @@ const ARTICLE_IMAGE_OVERRIDES = {
   "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph":
     new URL(
       "images/articles/phlip-side/pandoras-box-window-rain.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension":
+    new URL(
+      "images/articles/phlip-side/rest-victory-reading.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side":
+    new URL(
+      "images/articles/phlip-side/fog-of-grief-zaylan-apple-tree.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "the-high-cost-of-time-spent-managing-a-chronic-illness":
+    new URL(
+      "images/articles/phlip-side/high-cost-phone-call.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "advocating-for-the-ph-community-is-meaningful-work-it-helps-me-too":
+    new URL(
+      "images/articles/phlip-side/advocating-ph-community-support-rare.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "being-mindful-of-good-moments-helps-me-through-difficult-times":
+    new URL(
+      "images/articles/phlip-side/mindful-good-moments-holiday.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "when-coexisting-conditions-complicate-our-health-strategy":
+    new URL(
+      "images/articles/phlip-side/coexisting-conditions-pumpkin-display.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "grieving-the-mom-i-used-to-be-before-ph-entered-my-life":
+    new URL(
+      "images/articles/phlip-side/grieving-mom-state-park-2014.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds":
+    new URL(
+      "images/articles/phlip-side/iv-pump-to-oral-state-capitol-2025.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "legislative-advocacy-can-make-a-difference-for-ph-care":
+    new URL(
+      "images/articles/phlip-side/legislative-advocacy-us-capitol.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "im-learning-how-to-live-fully-not-just-survive-with-pulmonary-hypertension":
+    new URL(
+      "images/articles/phlip-side/live-fully-dc-mural.jpg",
+      PUBLIC_ASSET_URL,
+    ).toString(),
+  "i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension":
+    new URL(
+      "images/articles/phlip-side/traveling-with-ph-capitol-steps.jpg",
       PUBLIC_ASSET_URL,
     ).toString(),
   "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others":
