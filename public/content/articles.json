@@ -1,12 +1,12 @@
 {
   "publication": "BTA Magazine",
   "brand": "Breathtaking Awareness",
-  "version": "2026-06-03-content-package-with-images-v16",
+  "version": "2026-06-03-content-package-with-images-v17",
   "chapters": [
     {
       "title": "The PHlip-side",
       "slug": "the-phlip-side",
-      "count": 18,
+      "count": 19,
       "articleIds": [
         "i-learn-a-hard-lesson-about-traveling-with-pulmonary-hypertension",
         "finding-confidence-community-and-care-at-specially-tailored-camps",
@@ -21,6 +21,7 @@
         "the-high-cost-of-time-spent-managing-a-chronic-illness",
         "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side",
         "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport",
+        "how-flashing-the-boobs-is-helping-to-save-womens-lives",
         "sticky-bras-are-good-for-the-heart",
         "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension",
         "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph",
@@ -289,6 +290,25 @@
         }
       ],
       "status": "ready"
+    },
+    {
+      "id": "how-flashing-the-boobs-is-helping-to-save-womens-lives",
+      "chapter": "The PHlip-side",
+      "chapterSlug": "the-phlip-side",
+      "title": "How “flashing the boobs” is helping to save women’s lives",
+      "subtitle": "",
+      "date": "",
+      "byline": "Jolie Lizana",
+      "markdownPath": "content/articles/the-phlip-side/how-flashing-the-boobs-is-helping-to-save-womens-lives.md",
+      "images": [
+        {
+          "filename": "phlip-side/Jolie-Flash-the-boobs.png",
+          "caption": "Image paired with “How ‘flashing the boobs’ is helping to save women’s lives.” (Courtesy of Jolie Lizana)",
+          "alt": "Image paired with Jolie Lizana’s article about the Flash the Boobs campaign and women’s emergency heart care."
+        }
+      ],
+      "status": "ready",
+      "dateStatus": "date needed"
     },
     {
       "id": "sticky-bras-are-good-for-the-heart",
