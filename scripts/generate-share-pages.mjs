@@ -138,6 +138,7 @@ const ARTICLE_DATE_OVERRIDES = {
   "why-a-day-of-rest-is-a-victory-with-pulmonary-hypertension": "2025-08-15",
   "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side": "2025-10-03",
   "sticky-bras-are-good-for-the-heart": "2025-09-12",
+  "how-flashing-the-boobs-is-helping-to-save-womens-lives": "2025-09-05",
   "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport": "2025-09-26",
   "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others": "2026-01-30",
 };
