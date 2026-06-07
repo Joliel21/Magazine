@@ -1,7 +1,7 @@
 {
   "publication": "BTA Magazine",
   "brand": "Breathtaking Awareness",
-  "version": "2026-06-03-content-package-with-images-v19",
+  "version": "2026-06-03-content-package-with-images-v20",
   "chapters": [
     {
       "title": "The PHlip-side",
@@ -301,11 +301,6 @@
       "byline": "Jolie Lizana",
       "markdownPath": "content/articles/the-phlip-side/sticky-bras-are-good-for-the-heart.md",
       "images": [
-        {
-          "filename": "phlip-side/Jolie-Flash-the-boobs.png",
-          "caption": "Image paired with “Sticky bras are good for the heart.” (Courtesy of Jolie Lizana)",
-          "alt": "Image paired with Jolie Lizana’s article about sticky bras and emergency heart care access."
-        },
         {
           "filename": "phlip-side/Nippies.png",
           "caption": "Nippies image paired with “Sticky bras are good for the heart.” (Courtesy of Jolie Lizana)",
