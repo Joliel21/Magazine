@@ -105,7 +105,7 @@ const ARTICLE_IMAGE_OVERRIDES = {
     ).toString(),
   "sticky-bras-are-good-for-the-heart":
     new URL(
-      "images/articles/phlip-side/Jolie-Flash-the-boobs.png",
+      "images/articles/phlip-side/Nippies.png",
       PUBLIC_ASSET_URL,
     ).toString(),
   "how-flashing-the-boobs-is-helping-to-save-womens-lives":
