@@ -1,0 +1,37 @@
+name: Generate static article share pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "public/content/**"
+      - "public/images/**"
+      - "scripts/generate-share-pages.mjs"
+      - ".github/workflows/generate-share-pages.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  generate-share-pages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate static article share pages
+        run: node scripts/generate-share-pages.mjs
+
+      - name: Commit generated share pages
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Generate static article share pages"
+          file_pattern: public/share/**/*
