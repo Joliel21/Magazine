@@ -1,4 +1,3 @@
-[the-weight-of-staying-well-when-survival-mode-stops-being-sustainable.md](https://github.com/user-attachments/files/28824194/the-weight-of-staying-well-when-survival-mode-stops-being-sustainable.md)
 # The Weight of Staying Well: When Survival Mode Stops Being Sustainable
 
 By Jolie Lizana
