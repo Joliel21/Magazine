@@ -1,75 +1,59 @@
-# BTA Magazine
+# The Words We Carry Magazine
 
-Clean GitHub-ready magazine reader for Breathtaking Awareness.
+Static GitHub Pages magazine reader for Jolie Lizana / Breathtaking Awareness.
 
-## What this repo does
+## Current content source
 
-- Opens with a realistic closed magazine cover.
-- Lets readers open into a page/spread magazine experience.
-- Supports table of contents, thumbnails, page jump, keyboard navigation, swipe navigation, optional music, tilt controls, and single-page/two-page viewing.
-- Uses `viewer.json` and `publish_manifest.json` for content updates so normal issue updates do not require app-code changes.
-- Uses publication-date issue folders, such as `issues/2026-05-26/`.
-- Is ready for GitHub Pages.
-
-## Quick start in GitHub
-
-1. Upload **all files and folders** from this ZIP into your repository root.
-2. Go to **Settings → Pages**.
-3. Under **Build and deployment**, choose **GitHub Actions**.
-4. Push/commit to the `main` branch.
-5. GitHub will build and publish the reader.
-
-## Issue naming rule
-
-Use this format for issue folders:
+The reader loads the magazine from the public content system:
 
 ```text
-issues/YYYY-MM-DD/
+public/content/articles.json
+public/content/chapters.json
+public/content/articles/{chapterSlug}/{articleSlug}.md
+public/images/...
+public/fonts/...
+public/share/...
 ```
 
-Example:
+Example article path:
 
 ```text
-issues/2026-05-26/
+public/content/articles/the-phlip-side/a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport.md
 ```
 
-The URL will be:
+## Deployment URL
+
+The GitHub Pages deployment is expected to live at:
 
 ```text
-https://joliel21.github.io/BTA-Magazine/?issue=2026-05-26
+https://joliel21.github.io/Magazine/
 ```
 
-## Updating content later
+Use `/Magazine/` for GitHub Pages paths in this repo.
 
-For a new issue:
+## Share pages
 
-1. Copy the folder `issues/2026-05-26/`.
-2. Rename the copy using the publication date, for example `issues/2026-06-15/`.
-3. Edit only:
-   - `issues/YYYY-MM-DD/viewer.json`
-   - `issues/YYYY-MM-DD/publish_manifest.json`
-4. Add page image URLs in `viewer.json`.
-5. Update the table of contents in `viewer.json`.
-6. Update display/publication settings in `publish_manifest.json`.
-
-No app-code changes are required for normal content updates.
-
-## Important files
+Static article share pages are generated from `public/content/articles.json` and article markdown files by:
 
 ```text
-.github/workflows/deploy.yml       GitHub Pages build/deploy workflow
-issues/2026-05-26/viewer.json      Issue pages, cover, table of contents
-issues/2026-05-26/publish_manifest.json  Branding, background, feature toggles
-src/App.tsx                        Reader app
-src/styles.css                     Reader styling
+scripts/generate-share-pages.mjs
 ```
 
-## URL options
-
-Default issue:
+Generated pages are written to:
 
 ```text
-/?issue=2026-05-26
+public/share/{articleSlug}/index.html
 ```
 
-If no issue is specified, the reader opens `2026-05-26` by default. Change `DEFAULT_ISSUE_ID` in `src/App.tsx` only when you want a different default issue.
+## Build commands
+
+```bash
+npm install
+npm run build
+```
+
+WordPress bundle build, when needed:
+
+```bash
+npm run build:wp
+```
