@@ -1,0 +1,172 @@
+{
+  "version": "1.0.2",
+  "runtime": {
+    "background": "https://breathtakingawareness.com/wp-content/uploads/2025/12/Wood-Digital-Scrapbook-Paper-9.png",
+    "brandingEnabled": true,
+    "logoLight": "https://breathtakingawareness.com/wp-content/uploads/2025/09/cropped-logo-watermark.png",
+    "logoDark": "https://breathtakingawareness.com/wp-content/uploads/2024/09/cropped-cropped-cropped-bta-logo-1-1.jpg"
+  },
+  "publication": {
+    "title": "Breathtaking Awareness",
+    "subtitle": "The Words We Carry",
+    "displayTitle": "Breathtaking Awareness • The Words We Carry"
+  },
+  "music": {
+    "enabled": true,
+    "tracks": [
+      {
+        "id": "the-mountain-warm-storytelling",
+        "name": "Pages at Dusk",
+        "type": "Storytelling",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/the_mountain-warm-storytelling-512283.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "the_mountain"
+      },
+      {
+        "id": "the-mountain-violin",
+        "name": "Quiet Strings",
+        "type": "Instrumental",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/the_mountain-violin-513168.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "the_mountain"
+      },
+      {
+        "id": "the-mountain-instrumental-ambient",
+        "name": "Open Air",
+        "type": "Ambient",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/the_mountain-instrumental-ambient-443538.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "the_mountain"
+      },
+      {
+        "id": "relaxingtime-relaxing-music-vol1",
+        "name": "Soft Landing",
+        "type": "Relaxing",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/relaxingtime-relaxing-music-vol1-124477.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "relaxingtime"
+      },
+      {
+        "id": "paulyudin-documentary",
+        "name": "Documentary Calm",
+        "type": "Documentary",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/paulyudin-documentary-513010.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "paulyudin"
+      },
+      {
+        "id": "leberch-yoga",
+        "name": "Slow Breath",
+        "type": "Calm",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/leberch-yoga-509709.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "leberch"
+      },
+      {
+        "id": "leberch-meditation",
+        "name": "Still Water",
+        "type": "Meditation",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/leberch-meditation-513747.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "leberch"
+      },
+      {
+        "id": "leberch-inspiring",
+        "name": "Forward Light",
+        "type": "Inspiring",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/leberch-inspiring-511351.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "leberch"
+      },
+      {
+        "id": "leberch-atmospheric-documentary",
+        "name": "Deep Focus",
+        "type": "Documentary",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/leberch-atmospheric-documentary-509386.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "leberch"
+      },
+      {
+        "id": "joyinsound-breath-of-renewal",
+        "name": "Breath of Renewal",
+        "type": "Atmospheric",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/joyinsound-breath-of-renewal-386056.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "joyinsound"
+      },
+      {
+        "id": "joyinsound-ancient-ritual-flame",
+        "name": "Ritual Flame",
+        "type": "Atmospheric",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/joyinsound-ancient-ritual-flame-386048.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "joyinsound"
+      },
+      {
+        "id": "innertune-relaxing-birds-and-piano",
+        "name": "Birdsong Piano",
+        "type": "Nature Piano",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/innertune-relaxing-birds-and-piano-music-137153.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "innertune"
+      },
+      {
+        "id": "grand-project-soul-of-the-earth",
+        "name": "Earth Echo",
+        "type": "Ambient",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/grand_project-soul-of-the-earth_15min-391198.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "grand_project"
+      },
+      {
+        "id": "atlasaudio-relax",
+        "name": "Quiet Room",
+        "type": "Relaxing",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/atlasaudio-relax-511892.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "atlasaudio"
+      },
+      {
+        "id": "atlasaudio-emotions",
+        "name": "Gentle Emotion",
+        "type": "Emotional",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/atlasaudio-emotions-511881.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "atlasaudio"
+      },
+      {
+        "id": "alex-morgan-zen-garden-stillness",
+        "name": "Garden Stillness",
+        "type": "Meditation",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/alex-morgan-zen-garden-stillness-537457.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "Alex Morgan"
+      },
+      {
+        "id": "alex-morgan-no-copyright-music",
+        "name": "Clear Horizon",
+        "type": "Ambient",
+        "url": "https://breathtakingawareness.com/wp-content/uploads/2026/06/alex-morgan-no-copyright-music-528321.mp3",
+        "license": "Verify and retain original license terms before final publication.",
+        "source": "WordPress Media Library",
+        "attribution": "Alex Morgan"
+      }
+    ]
+  }
+}
