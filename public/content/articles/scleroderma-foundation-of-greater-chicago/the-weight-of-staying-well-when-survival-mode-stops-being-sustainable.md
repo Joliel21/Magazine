@@ -8,12 +8,6 @@ Publication date: May 19, 2026; updated May 27, 2026
 
 <!-- BTA_IMAGE_START -->
 
-![Image supplied by Jolie Lizana for the article about the weight of staying well.](../../../images/articles/scleroderma-foundation-of-greater-chicago/weight-of-staying-well.jpg)
-
-*Image paired with “The Weight of Staying Well: When Survival Mode Stops Being Sustainable.” (Courtesy of Jolie Lizana)*
-
-<!-- BTA_IMAGE_END -->
-
 Living with scleroderma and pulmonary arterial hypertension, along with the tangled gut, heart failure, and other complications they bring, makes keeping up with appointments, medications, side effects, and monitoring a full-time job.
 
 ## Acute Survival Mode
