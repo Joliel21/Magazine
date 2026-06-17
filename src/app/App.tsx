@@ -1,4 +1,10 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+  useMemo,
+  type TouchEvent as ReactTouchEvent,
+} from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PlaceMagazineAnimation } from "@/app/components/PlaceMagazineAnimation";
@@ -20,20 +26,17 @@ import {
   FALLBACK_MANIFEST,
   type PublishManifest,
 } from "@/app/data/fallback-data";
-import {
-  getArticlesUrl,
-  getChaptersUrl,
-  getDataUrl,
-  getMagazineUrl,
-  resolvePublicUrl,
-} from "@/app/config/data-source";
+import { getDataUrl } from "@/app/config/data-source";
 import {
   contentMap as initialContentMap,
   ContentBlock,
 } from "@/app/components/MagazinePageLayouts";
 
-const ARTICLES_URL = getArticlesUrl();
-const CHAPTERS_URL = getChaptersUrl();
+const ARTICLES_URL = getDataUrl("ARTICLES_JSON");
+const CHAPTERS_URL = getDataUrl("CHAPTERS_JSON");
+const FRONT_MATTER_URL = getDataUrl("FRONT_MATTER_JSON");
+const CHAPTER_DESCRIPTIONS_URL = getDataUrl("CHAPTER_DESCRIPTIONS_JSON");
+const BASE_RAW_URL = getDataUrl("BASE_RAW_URL");
 
 const BOOKMARKS_STORAGE_KEY =
   "breathtaking-awareness-magazine-reader-bookmarks";
@@ -88,9 +91,32 @@ const normalizeArticleKey = (value = "") =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
 
-const PUBLIC_MAGAZINE_URL = getMagazineUrl();
+const PUBLIC_MAGAZINE_URL =
+  "https://joliel21.github.io/Magazine/";
 
 const PAGE_STACK_OUTSIDE_WIDTH = 64;
+const DESKTOP_BREAKPOINT = 768;
+const AUTO_SINGLE_PAGE_BREAKPOINT = 1120;
+const PHONE_SINGLE_PAGE_BREAKPOINT = 760;
+const TOOLBAR_MIN_HEIGHT = 72;
+const TOOLBAR_MAX_HEIGHT = 92;
+const TOOLBAR_TWO_ROW_BREAKPOINT = 520;
+const TOOLBAR_TWO_ROW_HEIGHT = 144;
+const TOOLBAR_WIDTH_RATIO = 0.0615;
+const MAX_READING_SCALE = 1.68;
+
+const getResponsiveToolbarHeight = (width: number) => {
+  if (width < TOOLBAR_TWO_ROW_BREAKPOINT) {
+    return TOOLBAR_TWO_ROW_HEIGHT;
+  }
+
+  return Math.round(
+    Math.min(
+      TOOLBAR_MAX_HEIGHT,
+      Math.max(TOOLBAR_MIN_HEIGHT, width * TOOLBAR_WIDTH_RATIO),
+    ),
+  );
+};
 
 const getPublicArticleShareUrl = (
   articleId: string | number,
@@ -178,22 +204,69 @@ function App() {
     useState(false);
   const [showIntroAnimation, setShowIntroAnimation] =
     useState(false);
-  const [hasCompletedFirstOpen, setHasCompletedFirstOpen] =
-    useState(false);
 
   const [magazineSize] = useState({ width: 480, height: 660 });
   const [layoutScale, setLayoutScale] = useState(1);
-  const isDesktop =
-    typeof window !== "undefined"
-      ? window.innerWidth >= 768
-      : true;
+  const [readerMetrics, setReaderMetrics] = useState(() => {
+    const width =
+      typeof window !== "undefined" ? window.innerWidth : 1366;
+    const height =
+      typeof window !== "undefined" ? window.innerHeight : 820;
+
+    return {
+      width,
+      height,
+      toolbarHeight: getResponsiveToolbarHeight(width),
+    };
+  });
+
+  const isDesktop = readerMetrics.width >= DESKTOP_BREAKPOINT;
+  const toolbarHeight =
+    appState === "reading" ? readerMetrics.toolbarHeight : 0;
 
   // Any visible magazine turn must start from one full page, not a two-page spread.
   // This keeps the first 45-degree turn from rendering as a spread, and it keeps
   // the 90-degree sideways view from clipping inside an upright page box.
   const isMagazineTurn = tiltAngle !== 0;
+
+  // WordPress embeds can become too narrow for a readable two-page spread even
+  // while still technically being desktop-sized. When the reader root crosses
+  // this breakpoint, force the magazine into one-page view without changing the
+  // user's selected view-mode preference.
+  const isPhoneOrNarrowReader =
+    readerMetrics.width < PHONE_SINGLE_PAGE_BREAKPOINT;
+
+  const isAutoSinglePageDueToNarrowScreen =
+    appState === "reading" &&
+    !isSinglePageMode &&
+    !isMagazineTurn &&
+    readerMetrics.width < AUTO_SINGLE_PAGE_BREAKPOINT;
+
   const effectiveSinglePageMode =
-    isSinglePageMode || isMagazineTurn;
+    isSinglePageMode ||
+    isMagazineTurn ||
+    isAutoSinglePageDueToNarrowScreen;
+
+  const [showExpandScreenNotice, setShowExpandScreenNotice] =
+    useState(false);
+  const wasAutoSinglePageDueToNarrowScreenRef = useRef(false);
+
+  useEffect(() => {
+    const didJustShrinkFromSpreadToSingle =
+      isAutoSinglePageDueToNarrowScreen &&
+      !wasAutoSinglePageDueToNarrowScreenRef.current;
+
+    if (didJustShrinkFromSpreadToSingle) {
+      setShowExpandScreenNotice(true);
+    }
+
+    if (!isAutoSinglePageDueToNarrowScreen) {
+      setShowExpandScreenNotice(false);
+    }
+
+    wasAutoSinglePageDueToNarrowScreenRef.current =
+      isAutoSinglePageDueToNarrowScreen;
+  }, [isAutoSinglePageDueToNarrowScreen]);
 
   // Layout State & History
   const [layoutState, setLayoutState] = useState<
@@ -494,30 +567,88 @@ function App() {
   };
 
   useEffect(() => {
+    const getReaderRect = () => {
+      const root = document.getElementById(
+        "the-words-we-carry-root",
+      );
+      const rect = root?.getBoundingClientRect();
+
+      return {
+        width:
+          rect && rect.width > 0
+            ? rect.width
+            : window.innerWidth,
+        height:
+          rect && rect.height > 0
+            ? rect.height
+            : window.innerHeight,
+      };
+    };
+
     const handleResize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      const isDesktop = width >= 768;
+      const { width, height } = getReaderRect();
+      const isDesktop = width >= DESKTOP_BREAKPOINT;
+      const responsiveToolbarHeight =
+        getResponsiveToolbarHeight(width);
 
-      const BASE_WIDTH = 480;
-      const BASE_HEIGHT = 660;
+      setReaderMetrics((current) => {
+        if (
+          current.width === width &&
+          current.height === height &&
+          current.toolbarHeight === responsiveToolbarHeight
+        ) {
+          return current;
+        }
 
-      // Calculate available space
-      // Leave space for UI and margins
-      const horizontalMargin = isDesktop ? 60 : 20;
-      const verticalMargin = isDesktop ? 140 : 100;
+        return {
+          width,
+          height,
+          toolbarHeight: responsiveToolbarHeight,
+        };
+      });
 
-      const availableWidth = width - horizontalMargin;
-      const availableHeight = height - verticalMargin;
+      const BASE_WIDTH = magazineSize.width;
+      const BASE_HEIGHT = magazineSize.height;
+      const TOP_BAR_HEIGHT =
+        appState === "reading" ? responsiveToolbarHeight : 0;
+
+      // Use the actual WordPress shortcode/root size, not the whole browser
+      // window. WordPress themes add headers, margins, admin bars, and page
+      // wrappers, so window.innerHeight can make the magazine too tall.
+      // Determine target layout first so single-page mode can use more of the
+      // available space while still leaving balanced background above/below.
+      const isTurn = tiltAngle !== 0;
+      const isSpread =
+        width >= AUTO_SINGLE_PAGE_BREAKPOINT &&
+        !isSinglePageMode &&
+        !isTurn;
+      const isOnePageLayout = !isSpread && !isTurn;
+
+      const horizontalMargin = isDesktop
+        ? isOnePageLayout
+          ? Math.max(24, Math.min(56, width * 0.032))
+          : Math.max(56, Math.min(96, width * 0.055))
+        : 18;
+      const verticalMargin = isDesktop
+        ? isOnePageLayout
+          ? Math.max(12, Math.min(22, height * 0.022))
+          : Math.max(24, Math.min(42, height * 0.04))
+        : 12;
+
+      const availableWidth = Math.max(
+        320,
+        width - horizontalMargin,
+      );
+      const availableHeight = Math.max(
+        360,
+        height - TOP_BAR_HEIGHT - verticalMargin * 2,
+      );
 
       // Determine target layout dimensions based on view mode.
       // During any visible turn, render one page and fit the rotated page's
       // bounding box.
-      const isTurn = tiltAngle !== 0;
-      const isSpread =
-        isDesktop && !isSinglePageMode && !isTurn;
-
-      let targetWidth, targetHeight;
+      let targetWidth: number;
+      let targetHeight: number;
 
       if (isTurn) {
         const radians = (Math.abs(tiltAngle) * Math.PI) / 180;
@@ -528,36 +659,62 @@ function App() {
           Math.abs(Math.sin(radians)) * BASE_WIDTH +
           Math.abs(Math.cos(radians)) * BASE_HEIGHT;
       } else {
-        targetWidth = isSpread ? BASE_WIDTH * 2 : BASE_WIDTH;
+        targetWidth = isSpread
+          ? BASE_WIDTH * 2 + PAGE_STACK_OUTSIDE_WIDTH * 2
+          : BASE_WIDTH;
         targetHeight = BASE_HEIGHT;
       }
 
-      // Calculate scale to fit
       const scaleX = availableWidth / targetWidth;
       const scaleY = availableHeight / targetHeight;
 
-      let newScale;
+      let newScale: number;
 
-      // Calculate layout scale
       if (isSpread || isTurn) {
-        // Spreads and turned pages must fit fully on screen.
+        // Spreads and turned pages must fit fully inside the WordPress root.
         newScale = Math.min(scaleX, scaleY);
       } else {
-        // Standard single-page view: prioritize width fit and allow height scroll.
-        newScale = Math.min(scaleX, 1.5);
+        // Single-page view should use the available desktop space more fully
+        // while preserving the page ratio and keeping balanced background above
+        // and below the book. The cap prevents oversized pages on very large
+        // monitors but allows a substantially larger single page than spreads.
+        newScale = Math.min(scaleX, scaleY, MAX_READING_SCALE);
       }
 
-      // Global cap for all modes
-      newScale = Math.min(newScale, 1.5);
+      newScale = Math.max(
+        0.55,
+        Math.min(newScale, MAX_READING_SCALE),
+      );
 
       setLayoutScale(newScale);
     };
 
-    handleResize(); // Initial calculation
+    handleResize();
+
+    const root = document.getElementById(
+      "the-words-we-carry-root",
+    );
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined" && root
+        ? new ResizeObserver(handleResize)
+        : null;
+
+    if (resizeObserver && root) {
+      resizeObserver.observe(root);
+    }
+
     window.addEventListener("resize", handleResize);
-    return () =>
+    window.addEventListener("orientationchange", handleResize);
+
+    return () => {
+      resizeObserver?.disconnect();
       window.removeEventListener("resize", handleResize);
-  }, [isSinglePageMode, tiltAngle]);
+      window.removeEventListener(
+        "orientationchange",
+        handleResize,
+      );
+    };
+  }, [appState, isSinglePageMode, magazineSize, tiltAngle]);
 
   const [musicLibrary, setMusicLibrary] = useState<
     MusicTrack[]
@@ -577,18 +734,11 @@ function App() {
   };
 
   const handleOpenMagazine = () => {
-    if (hasCompletedFirstOpen) {
-      setAppState("reading");
-      setCurrentPage(1);
-      return;
-    }
-
-    setAppState("first-open");
-    setCurrentPage("cover");
+    setAppState("reading");
+    setCurrentPage(1);
   };
 
   const handleFirstOpenComplete = () => {
-    setHasCompletedFirstOpen(true);
     setAppState("reading");
     setCurrentPage(1);
   };
@@ -603,7 +753,9 @@ function App() {
     if (currentPage === "cover") return;
 
     const isDesktop = window.innerWidth >= 768;
-    const isSpread = isDesktop && !effectiveSinglePageMode;
+    const isSpread =
+      readerMetrics.width >= AUTO_SINGLE_PAGE_BREAKPOINT &&
+      !effectiveSinglePageMode;
 
     if (isSpread) {
       if (currentPage <= 1) {
@@ -628,7 +780,9 @@ function App() {
     if (currentPage === "cover") return;
 
     const isDesktop = window.innerWidth >= 768;
-    const isSpread = isDesktop && !effectiveSinglePageMode;
+    const isSpread =
+      readerMetrics.width >= AUTO_SINGLE_PAGE_BREAKPOINT &&
+      !effectiveSinglePageMode;
     const totalPages = magazineData.length;
 
     if (isSpread) {
@@ -798,6 +952,84 @@ function App() {
 
   const canGoPrevious = currentPage !== "cover";
   const canGoNext = currentPage !== "cover";
+  const touchStartRef = useRef<{
+    x: number;
+    y: number;
+    time: number;
+  } | null>(null);
+
+  const handleReaderTouchStart = (
+    event: ReactTouchEvent<HTMLElement>,
+  ) => {
+    if (
+      appState !== "reading" ||
+      currentPage === "cover" ||
+      openPanel
+    ) {
+      touchStartRef.current = null;
+      return;
+    }
+
+    const target = event.target as HTMLElement | null;
+    if (
+      target?.closest(
+        "button, input, textarea, select, a, [role='button']",
+      )
+    ) {
+      touchStartRef.current = null;
+      return;
+    }
+
+    const touch = event.touches[0];
+    touchStartRef.current = {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: Date.now(),
+    };
+  };
+
+  const handleReaderTouchEnd = (
+    event: ReactTouchEvent<HTMLElement>,
+  ) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+
+    if (
+      !start ||
+      appState !== "reading" ||
+      currentPage === "cover" ||
+      openPanel
+    ) {
+      return;
+    }
+
+    const touch = event.changedTouches[0];
+    const deltaX = touch.clientX - start.x;
+    const deltaY = touch.clientY - start.y;
+    const elapsed = Date.now() - start.time;
+
+    const minimumSwipeDistance = isPhoneOrNarrowReader
+      ? 42
+      : 56;
+    const maximumVerticalDrift = isPhoneOrNarrowReader
+      ? 92
+      : 80;
+
+    if (
+      elapsed > 1200 ||
+      Math.abs(deltaX) < minimumSwipeDistance ||
+      Math.abs(deltaY) > maximumVerticalDrift ||
+      Math.abs(deltaX) < Math.abs(deltaY) * 1.15
+    ) {
+      return;
+    }
+
+    if (deltaX < 0 && canGoNext) {
+      handleNext();
+    } else if (deltaX > 0 && canGoPrevious) {
+      handlePrevious();
+    }
+  };
 
   const stringifySearchValue = (value: unknown): string => {
     if (value == null || typeof value === "boolean") return "";
@@ -1232,14 +1464,27 @@ function App() {
   useEffect(() => {
     const fetchGithubData = async () => {
       try {
-        const [articlesRes, chaptersRes] = await Promise.all([
+        const [
+          articlesRes,
+          chaptersRes,
+          frontMatterRes,
+          chapterDescriptionsRes,
+        ] = await Promise.all([
           fetch(ARTICLES_URL),
           fetch(CHAPTERS_URL),
+          fetch(FRONT_MATTER_URL),
+          fetch(CHAPTER_DESCRIPTIONS_URL),
         ]);
 
         if (articlesRes.ok && chaptersRes.ok) {
           const articlesRaw = await articlesRes.json();
           const chaptersRaw = await chaptersRes.json();
+          const frontMatterRaw = frontMatterRes.ok
+            ? await frontMatterRes.json()
+            : { pages: [] };
+          const chapterDescriptionsRaw = chapterDescriptionsRes.ok
+            ? await chapterDescriptionsRes.json()
+            : {};
 
           const articles = Array.isArray(articlesRaw)
             ? articlesRaw
@@ -1247,6 +1492,14 @@ function App() {
           const chapters = Array.isArray(chaptersRaw)
             ? chaptersRaw
             : chaptersRaw.chapters || [];
+          const frontMatterPages = Array.isArray(frontMatterRaw)
+            ? frontMatterRaw
+            : frontMatterRaw.pages || [];
+          const chapterDescriptionDataBySlug =
+            chapterDescriptionsRaw &&
+            typeof chapterDescriptionsRaw === "object"
+              ? chapterDescriptionsRaw
+              : {};
 
           const newPages: MagazinePage[] = [];
           const newToc: TOCEntry[] = [];
@@ -1324,279 +1577,77 @@ function App() {
             };
           };
 
-          // Inside front cover / back of the front cover.
-          // This uses pageNumber 0 so it appears on the LEFT side of the first open spread,
-          // directly behind the front cover. Page 1 remains the first right-side magazine page.
-          const reservedPageId = "inside-front-cover-page";
-          newPages.push({
-            id: reservedPageId,
-            pageNumber: 0,
-            type: "layout",
-            layoutId: "inside-cover",
-            alt: "Editorial notice, disclaimer, publication information, and copyright",
-          });
-          newLayoutState[reservedPageId] = {
-            blocks: [],
-          };
+          let reservedPageId = "inside-front-cover-page";
+          let whatsInsideRightPageId = "whats-inside-right-page";
+          const lockedBlankBeforeDearReaderPageIds =
+            new Set<string>();
 
-          const frontOpenerPageId = "front-opener-page";
-          newPages.push({
-            id: frontOpenerPageId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "article-text-layout",
-            alt: "Breathtaking Awareness: The Words We Carry opening page",
-          });
-          newLayoutState[frontOpenerPageId] = {
-            blocks: [
-              {
-                type: "markdown",
-                content: `# Breathtaking Awareness
+          frontMatterPages.forEach((frontPage: any) => {
+            if (!frontPage || !frontPage.id) return;
 
-## The Words We Carry
+            const pageId = String(frontPage.id);
+            const pageNumber =
+              typeof frontPage.pageNumber === "number"
+                ? frontPage.pageNumber
+                : pageNum;
 
-### Volume I
+            if (pageNumber === 0) {
+              reservedPageId = pageId;
+            }
 
-#### 2025-2026
+            if (pageId === "whats-inside-right-page") {
+              whatsInsideRightPageId = pageId;
+            }
 
-A collected volume of advocacy, reflection, education, and lived experience.`,
-                _id: `md-${frontOpenerPageId}`,
-              },
-            ],
-          };
-          newToc.push({
-            id: "toc-front-opener",
-            title: "The Words We Carry",
-            pageNumber: pageNum,
-            level: 0,
-          });
-          pageNum++;
+            if (frontPage.preserveIfBlank) {
+              lockedBlankBeforeDearReaderPageIds.add(pageId);
+            }
 
-          const blankPageTwoId = "blank-page-two";
-          newPages.push({
-            id: blankPageTwoId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "article-text-layout",
-            alt: "Blank page",
-          });
-          newLayoutState[blankPageTwoId] = {
-            blocks: [
-              {
-                type: "markdown",
-                content: ``,
-                _id: `md-${blankPageTwoId}`,
-              },
-            ],
-          };
-          pageNum++;
+            newPages.push({
+              id: pageId,
+              pageNumber,
+              type: frontPage.type || "layout",
+              layoutId: frontPage.layoutId || "article-text-layout",
+              alt: frontPage.alt || pageId,
+            });
 
-          const welcomePageId =
-            "welcome-to-breathtaking-awareness";
-          newPages.push({
-            id: welcomePageId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "article-text-layout",
-            alt: "Welcome to Breathtaking Awareness",
+            newLayoutState[pageId] = {
+              blocks: Array.isArray(frontPage.blocks)
+                ? frontPage.blocks
+                : [],
+            };
+
+            if (frontPage.toc?.title) {
+              newToc.push({
+                id: frontPage.toc.id || `toc-${pageId}`,
+                title: frontPage.toc.title,
+                pageNumber,
+                level: frontPage.toc.level ?? 0,
+              });
+            }
+
+            if (typeof frontPage.pageNumber !== "number") {
+              pageNum++;
+            }
           });
 
-          newLayoutState[welcomePageId] = {
-            blocks: [
-              {
-                type: "markdown",
-                content: `# Welcome to Breathtaking Awareness
-
-This volume brings together stories of advocacy, resilience, education, and lived experience from across rare disease, chronic illness, and patient advocacy communities.
-
-Within these pages, readers will find personal essays, editorials, advocacy-focused writing, patient perspectives, practical support, and community-centered reflections. Each section highlights a different part of the patient experience, from navigating healthcare systems and daily life with chronic illness to finding purpose through advocacy, storytelling, and connection.
-
-This publication was created to inform, encourage, and remind readers that meaningful understanding often begins when people are willing to share what they have carried.
-
-Thank you for being part of the Breathtaking Awareness community.`,
-                _id: `md-${welcomePageId}`,
-              },
-            ],
-          };
-          newToc.push({
-            id: "toc-welcome",
-            title: "Welcome to Breathtaking Awareness",
-            pageNumber: pageNum,
-            level: 0,
-          });
-          pageNum++;
-
-          const aboutPageId =
-            "about-breathtaking-awareness-page";
-          newPages.push({
-            id: aboutPageId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "article-text-layout",
-            alt: "About Breathtaking Awareness",
-          });
-          newLayoutState[aboutPageId] = {
-            blocks: [
-              {
-                type: "markdown",
-                content: `Breathtaking Awareness is a patient-led advocacy and education platform founded by Jolie Lizana to support awareness, understanding, and connection within the pulmonary hypertension (PH), rare disease, and chronic illness communities.
-
-Through writing, interviews, educational projects, community resources, and creative advocacy, Breathtaking Awareness centers lived experience while helping people feel less isolated in complex health journeys.
-
-Its purpose is simple: to turn experience into understanding, and understanding into meaningful connections and medical reform.`,
-                _id: `md-${aboutPageId}`,
-              },
-            ],
-          };
-          newToc.push({
-            id: "toc-about-breathtaking-awareness",
-            title: "About Breathtaking Awareness",
-            pageNumber: pageNum,
-            level: 0,
-          });
-          pageNum++;
-
-          const missionPageId = "mission-statement-page";
-          newPages.push({
-            id: missionPageId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "article-text-layout",
-            alt: "Mission Statement",
-          });
-          newLayoutState[missionPageId] = {
-            blocks: [
-              {
-                type: "markdown",
-                content: `# Mission Statement
-
-Breathtaking Awareness empowers the pulmonary hypertension (PH) community through awareness, advocacy, education, and support.
-
-Our mission is to help people find the resources, guidance, and community they need while recognizing their potential to advocate, connect, and support others by sharing their experiences, skills, and passions.
-
-# About *The Words We Carry*
-
-*The Words We Carry* is the first collected volume from Breathtaking Awareness. It brings together advocacy writing, personal reflection, patient perspective, practical support, and community-centered storytelling in one preserved collection.
-
-This volume honors the words carried through diagnosis, uncertainty, resilience, grief, humor, identity, and hope. It is a record of what we notice, what we learn, what we question, and what we pass forward together.`,
-                _id: `md-${missionPageId}`,
-              },
-            ],
-          };
-          newToc.push({
-            id: "toc-mission-statement",
-            title: "Mission Statement",
-            pageNumber: pageNum,
-            level: 0,
-          });
-          pageNum++;
-
-          const howToUsePageId = "how-to-use-this-volume-page";
-          newPages.push({
-            id: howToUsePageId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "article-text-layout",
-            alt: "How to Use This Volume",
-          });
-          newLayoutState[howToUsePageId] = {
-            blocks: [
-              {
-                type: "markdown",
-                content: `# How to Use This Volume
-
-This volume can be read from beginning to end, or opened by section when you are looking for a specific kind of support, perspective, or resource.
-
-Move through the major sections when you are looking for a specific kind of support, perspective, or resource. Some pieces are personal reflections. Some are advocacy articles. Some offer practical support for daily life. Together, they create a record of what people learn, notice, question, and share while living with or caring about chronic and rare disease.
-
-The content in this volume is informational and reflective. It is not a substitute for medical care, diagnosis, treatment, or professional advice. When a topic relates to your health or care plan, use it as a starting point for a conversation with your healthcare team.`,
-                _id: `md-${howToUsePageId}`,
-              },
-            ],
-          };
-          newToc.push({
-            id: "toc-how-to-use-this-volume",
-            title: "How to Use This Volume",
-            pageNumber: pageNum,
-            level: 0,
-          });
-          pageNum++;
-
-          const volumeOnePageId = "volume-one-page";
-          newPages.push({
-            id: volumeOnePageId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "volume-one-page",
-            alt: "Volume I introduction page",
-          });
-          newLayoutState[volumeOnePageId] = {
-            blocks: [],
-          };
-          pageNum++;
-
-          const whatsInsideLeftPageId =
-            "whats-inside-left-page";
-          newPages.push({
-            id: whatsInsideLeftPageId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "whats-inside-left-page",
-            alt: "What's Inside left page",
-          });
-          newLayoutState[whatsInsideLeftPageId] = {
-            blocks: [],
-          };
-          pageNum++;
-
-          const whatsInsideRightPageId =
-            "whats-inside-right-page";
-          newPages.push({
-            id: whatsInsideRightPageId,
-            pageNumber: pageNum,
-            type: "layout",
-            layoutId: "whats-inside-right-page",
-            alt: "What's Inside contents page",
-          });
-          newLayoutState[whatsInsideRightPageId] = {
-            blocks: [],
-          };
-          pageNum++;
           const getChapterDescriptionData = (
             chapterSlug: string,
           ) => {
-            if (chapterSlug === "the-phlip-side") {
-              return {
-                title: "What is The PHlip-side?",
-                body: "**The PHlip-side** brings together published columns and editorials originally written for Pulmonary Hypertension News (Bionews). These pieces explore life with pulmonary hypertension, chronic illness, advocacy, healthcare experiences, identity, grief, resilience, and the complicated reality of learning to live in a body that does not always cooperate.",
-              };
+            const description =
+              (chapterDescriptionDataBySlug as Record<
+                string,
+                { title?: string; body?: string }
+              >)[chapterSlug];
+
+            if (!description?.title && !description?.body) {
+              return null;
             }
 
-            if (
-              chapterSlug ===
-              "scleroderma-foundation-of-greater-chicago"
-            ) {
-              return {
-                title: "What is Beyond the Column?",
-                body: "Beyond the Column brings together selected articles, features, and contributed pieces written beyond the regular column space for healthcare, nonprofit, and advocacy communities.",
-              };
-            }
-
-            if (chapterSlug === "rants-of-the-psyche") {
-              return {
-                title: "What You'll Find Inside:",
-                body: "Rants in Writing is a collection of personal reflections that explore identity, resilience, mental health, grief, growth, advocacy, and the emotional realities that often accompany chronic and rare disease.",
-              };
-            }
-
-            if (chapterSlug === "tips-tricks") {
-              return {
-                title: "What You'll Find Inside:",
-                body: "Tips & Tricks is a collection of practical lessons, lived-experience insights, and everyday strategies gathered through years of navigating healthcare, advocacy, and life with chronic illness.",
-              };
-            }
-
-            return null;
+            return {
+              title: description.title || "",
+              body: description.body || "",
+            };
           };
 
           let lastChapterSlug = "";
@@ -1719,14 +1770,10 @@ ${chapterDescription.body}`,
             if (
               assetUrl.startsWith("http") ||
               assetUrl.startsWith("data:") ||
-              assetUrl.startsWith("blob:") ||
-              assetUrl.startsWith("/src/")
+              assetUrl.startsWith("/src/") ||
+              assetUrl.startsWith("/")
             ) {
               return encodeURI(assetUrl);
-            }
-
-            if (assetUrl.startsWith("/")) {
-              return resolvePublicUrl(assetUrl);
             }
 
             // Article Markdown can use paths relative to public/content/articles.
@@ -1752,7 +1799,9 @@ ${chapterDescription.body}`,
               assetUrl = "content/images/" + assetUrl;
             }
 
-            return resolvePublicUrl(assetUrl);
+            return encodeURI(
+              BASE_RAW_URL + assetUrl.replace(/^\//, ""),
+            );
           };
 
           const getFirstImageMetadata = (markdown: string) => {
@@ -1896,7 +1945,7 @@ ${chapterDescription.body}`,
             if (!mdUrl) return "Error loading content.";
 
             if (!mdUrl.startsWith("http")) {
-              mdUrl = resolvePublicUrl(mdUrl);
+              mdUrl = BASE_RAW_URL + mdUrl.replace(/^\//, "");
             }
 
             const mdRes = await fetch(encodeURI(mdUrl));
@@ -2064,7 +2113,8 @@ ${chapterDescription.body}`,
                 if (imgMatch && imgMatch[1]) {
                   let imgPath = imgMatch[1].trim();
                   if (!imgPath.startsWith("http")) {
-                    imgPath = resolvePublicUrl(imgPath);
+                    imgPath =
+                      BASE_RAW_URL + imgPath.replace(/^\//, "");
                   }
                   imgPath = encodeURI(imgPath);
                   const altText =
@@ -2656,117 +2706,78 @@ ${chapterDescription.body}`,
 
             // Story text always begins on a new page after the title page and optional image page.
             let currentChunk = "";
-            let currentWeight = 0;
+            let currentHeight = 0;
 
-            // These weight limits intentionally stop article text before the lower safe margin.
-            // Paragraphs may split across pages, so the generator can use the available space
-            // without letting text run too close to the bottom edge.
-            const TARGET_WEIGHT_PER_PAGE = 1160;
-            const HARD_WEIGHT_PER_PAGE = 1240;
+            // Article pages are rendered inside a 480x660 page with 64px top and 56px bottom padding.
+            // The cap now matches that usable article text area so pages fill lower
+            // without running into the page edge.
+            const ARTICLE_TEXT_MAX_HEIGHT = 540;
+            const ARTICLE_BODY_CHARS_PER_LINE = 50;
+            const ARTICLE_BODY_LINE_HEIGHT = 21;
+            const ARTICLE_PARAGRAPH_MARGIN = 12;
+            const ARTICLE_MIN_SPLIT_HEIGHT =
+              ARTICLE_BODY_LINE_HEIGHT * 2;
 
-            const getWeight = (
+            const normalizeForMeasure = (text: string) =>
+              text.replace(/\s+/g, " ").trim();
+
+            const estimateWrappedLines = (
+              text: string,
+              charsPerLine = ARTICLE_BODY_CHARS_PER_LINE,
+            ) => {
+              const normalized = normalizeForMeasure(
+                text.replace(/^#{1,6}\s+/, ""),
+              );
+              if (!normalized) return 0;
+
+              // Average line length in the rendered serif body is about 48-52 characters.
+              // Long unbroken text is rare here, but this keeps the estimate stable.
+              return Math.max(
+                1,
+                Math.ceil(normalized.length / charsPerLine),
+              );
+            };
+
+            const getElementHeight = (
               text: string,
               isContinuation = false,
             ) => {
-              const normalized = text
-                .replace(/\s+/g, " ")
-                .trim();
-              let weight = normalized.length;
+              const trimmed = text.trim();
+              if (!trimmed) return 0;
 
-              if (!isContinuation) {
-                // Paragraph spacing costs vertical room. Keep this lower than before so pages do not under-fill.
-                weight += 28;
+              const headingMatch =
+                trimmed.match(/^(#{2,6})\s+/);
+              if (headingMatch) {
+                const headingLevel = headingMatch[1].length;
+                const headingText = trimmed.replace(
+                  /^#{2,6}\s+/,
+                  "",
+                );
+                const headingLines = estimateWrappedLines(
+                  headingText,
+                  34,
+                );
+                const headingLineHeight =
+                  headingLevel <= 2 ? 23 : 21;
+                const topMargin = currentChunk
+                  ? headingLevel <= 2
+                    ? 24
+                    : 20
+                  : 0;
+                const bottomMargin =
+                  headingLevel <= 2 ? 12 : 10;
+                return (
+                  topMargin +
+                  headingLines * headingLineHeight +
+                  bottomMargin
+                );
               }
 
-              const lines = text.split("\n");
-              for (const line of lines) {
-                const trimmed = line.trim();
-                const headingMatch =
-                  trimmed.match(/^(#{2,6})\s+/);
-
-                if (headingMatch) {
-                  // Markdown section headings take more vertical room than their character count suggests.
-                  // Count that top/bottom heading space so generated article pages stop before the lower margin.
-                  const headingLevel = headingMatch[1].length;
-                  weight +=
-                    headingLevel <= 2
-                      ? 160
-                      : headingLevel === 3
-                        ? 135
-                        : 115;
-                }
-
-                if (
-                  trimmed.startsWith("- ") ||
-                  trimmed.startsWith("* ") ||
-                  trimmed.match(/^\d+\.\s/)
-                ) {
-                  weight += 28;
-                }
-                if (trimmed.length > 0 && trimmed.length < 45) {
-                  weight += 18;
-                }
-              }
-
-              // Extra cost for explicit line breaks inside list-like sections.
-              weight += Math.max(0, lines.length - 1) * 24;
-              return weight;
-            };
-
-            const splitLongSentence = (sentence: string) => {
-              const cleanSentence = sentence.trim();
-              if (cleanSentence.length <= 260)
-                return [cleanSentence];
-
-              const commaPieces = cleanSentence
-                .split(/(?<=[,;:])\s+/)
-                .filter(Boolean);
-
-              if (
-                commaPieces.length > 1 &&
-                commaPieces.every(
-                  (piece) => piece.length <= 320,
-                )
-              ) {
-                return commaPieces;
-              }
-
-              const words = cleanSentence
-                .split(/\s+/)
-                .filter(Boolean);
-              const chunks: string[] = [];
-              let chunk = "";
-
-              for (const word of words) {
-                const next = chunk ? `${chunk} ${word}` : word;
-                if (next.length > 230 && chunk) {
-                  chunks.push(chunk);
-                  chunk = word;
-                } else {
-                  chunk = next;
-                }
-              }
-
-              if (chunk) chunks.push(chunk);
-              return chunks;
-            };
-
-            // Split paragraphs finely enough that leftover bottom whitespace can be filled,
-            // including safe paragraph splits when a paragraph is too large for the remaining page.
-            const splitIntoPieces = (text: string) => {
-              if (text.includes("\n")) {
-                return text
-                  .split("\n")
-                  .map((line) => line.trim())
-                  .filter(Boolean);
-              }
-
-              const sentencePieces = text.match(
-                /[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g,
-              ) || [text];
-              return sentencePieces
-                .flatMap(splitLongSentence)
-                .filter(Boolean);
+              const lines = estimateWrappedLines(trimmed);
+              return (
+                lines * ARTICLE_BODY_LINE_HEIGHT +
+                (isContinuation ? 0 : ARTICLE_PARAGRAPH_MARGIN)
+              );
             };
 
             const appendText = (
@@ -2795,7 +2806,167 @@ ${chapterDescription.body}`,
               }
 
               currentChunk = "";
-              currentWeight = 0;
+              currentHeight = 0;
+            };
+
+            const splitParagraphForHeight = (
+              paragraph: string,
+              availableHeight: number,
+            ) => {
+              const words = paragraph
+                .trim()
+                .split(/\s+/)
+                .filter(Boolean);
+              if (words.length === 0) {
+                return { head: "", tail: "" };
+              }
+
+              let headWords: string[] = [];
+              let bestHead = "";
+              let bestIndex = 0;
+
+              for (
+                let index = 0;
+                index < words.length;
+                index++
+              ) {
+                headWords.push(words[index]);
+                const candidate = headWords.join(" ");
+                const candidateHeight = getElementHeight(
+                  candidate,
+                  false,
+                );
+
+                if (candidateHeight <= availableHeight) {
+                  bestHead = candidate;
+                  bestIndex = index + 1;
+                } else {
+                  break;
+                }
+              }
+
+              // If even a few words cannot fit, move the paragraph to the next page.
+              if (
+                !bestHead ||
+                bestIndex < Math.min(3, words.length)
+              ) {
+                return { head: "", tail: paragraph.trim() };
+              }
+
+              return {
+                head: bestHead,
+                tail: words.slice(bestIndex).join(" ").trim(),
+              };
+            };
+
+            const addTextBlock = (text: string) => {
+              let remaining = text.trim();
+              if (!remaining) return;
+
+              const isHeading = /^(#{2,6})\s+/.test(remaining);
+              const fullHeight = getElementHeight(
+                remaining,
+                false,
+              );
+
+              if (isHeading) {
+                // Never strand a section heading at the very bottom of a page.
+                if (
+                  currentHeight > 0 &&
+                  currentHeight + fullHeight >
+                    ARTICLE_TEXT_MAX_HEIGHT - 36
+                ) {
+                  flushTextPage();
+                }
+                appendText(remaining, currentChunk.length > 0);
+                currentHeight += getElementHeight(
+                  remaining,
+                  false,
+                );
+                return;
+              }
+
+              if (
+                currentHeight + fullHeight <=
+                ARTICLE_TEXT_MAX_HEIGHT
+              ) {
+                appendText(remaining, currentChunk.length > 0);
+                currentHeight += fullHeight;
+                return;
+              }
+
+              // Paragraph splitting is allowed, but only into the usable safe area.
+              // This fills the page without letting text run into the bottom edge.
+              while (remaining) {
+                const availableHeight =
+                  ARTICLE_TEXT_MAX_HEIGHT - currentHeight;
+
+                if (
+                  currentHeight > 0 &&
+                  availableHeight < ARTICLE_MIN_SPLIT_HEIGHT
+                ) {
+                  flushTextPage();
+                  continue;
+                }
+
+                const remainingHeight = getElementHeight(
+                  remaining,
+                  false,
+                );
+                if (
+                  remainingHeight <=
+                  ARTICLE_TEXT_MAX_HEIGHT - currentHeight
+                ) {
+                  appendText(
+                    remaining,
+                    currentChunk.length > 0,
+                  );
+                  currentHeight += remainingHeight;
+                  remaining = "";
+                  break;
+                }
+
+                const split = splitParagraphForHeight(
+                  remaining,
+                  Math.max(
+                    0,
+                    ARTICLE_TEXT_MAX_HEIGHT - currentHeight,
+                  ),
+                );
+
+                if (!split.head) {
+                  if (currentHeight > 0) {
+                    flushTextPage();
+                  } else {
+                    // Emergency fallback for an extremely long unbreakable paragraph.
+                    const words = remaining
+                      .split(/\s+/)
+                      .filter(Boolean);
+                    const forcedHead = words
+                      .slice(0, 90)
+                      .join(" ");
+                    const forcedTail = words
+                      .slice(90)
+                      .join(" ");
+                    appendText(forcedHead, false);
+                    currentHeight += getElementHeight(
+                      forcedHead,
+                      false,
+                    );
+                    remaining = forcedTail.trim();
+                    flushTextPage();
+                  }
+                  continue;
+                }
+
+                appendText(split.head, currentChunk.length > 0);
+                currentHeight += getElementHeight(
+                  split.head,
+                  false,
+                );
+                remaining = split.tail;
+                flushTextPage();
+              }
             };
 
             const paragraphs = cleanMd.split("\n\n");
@@ -2837,53 +3008,16 @@ ${chapterDescription.body}`,
                   const text = part.trim();
                   if (text.length === 0) continue;
 
-                  const pWeight = getWeight(text, false);
+                  // Preserve multi-line markdown blocks line-by-line. Normal article
+                  // paragraphs are handled as complete paragraphs and split only when needed.
+                  const textBlocks = text.includes("\n")
+                    ? text
+                        .split("\n")
+                        .map((line) => line.trim())
+                        .filter(Boolean)
+                    : [text];
 
-                  // If the whole paragraph fits inside the safe target, keep it together.
-                  if (
-                    currentWeight + pWeight <=
-                    TARGET_WEIGHT_PER_PAGE
-                  ) {
-                    appendText(text, currentChunk.length > 0);
-                    currentWeight += pWeight;
-                    continue;
-                  }
-
-                  // Otherwise split it. This is intentional to reduce large blank areas at page bottoms.
-                  const pieces = splitIntoPieces(text);
-                  let firstPieceInParagraph = true;
-
-                  for (const piece of pieces) {
-                    const pieceWeight = getWeight(
-                      piece,
-                      !firstPieceInParagraph,
-                    );
-                    const limit =
-                      currentWeight >= TARGET_WEIGHT_PER_PAGE
-                        ? HARD_WEIGHT_PER_PAGE
-                        : TARGET_WEIGHT_PER_PAGE;
-
-                    if (
-                      currentWeight > 0 &&
-                      currentWeight + pieceWeight > limit
-                    ) {
-                      flushTextPage();
-                    }
-
-                    appendText(
-                      piece,
-                      firstPieceInParagraph &&
-                        currentChunk.length > 0,
-                    );
-                    currentWeight += pieceWeight;
-                    firstPieceInParagraph = false;
-
-                    // Hard safety flush after adding a large split piece. This prevents bleed while
-                    // still allowing enough text to fill the page before the split.
-                    if (currentWeight >= HARD_WEIGHT_PER_PAGE) {
-                      flushTextPage();
-                    }
-                  }
+                  textBlocks.forEach(addTextBlock);
                 }
               }
             }
@@ -2935,51 +3069,54 @@ ${chapterDescription.body}`,
               pageNum++;
             });
 
-            // Add a generated share page after every editorial/article.
+            // Add a generated share page after most editorial/article pages.
             // This keeps share controls out of the GitHub article Markdown so future articles inherit it automatically.
-            const sharePageId = `article-${article.id}-share`;
-            newPages.push({
-              id: sharePageId,
-              pageNumber: pageNum,
-              type: "layout",
-              layoutId: "article-text-layout",
-              alt: `Share ${article.title}`,
-            });
-            newLayoutState[sharePageId] = {
-              blocks: [
-                {
-                  type: "share",
-                  articleId: String(article.id || articleIndex),
-                  articleTitle:
-                    article.title || "this editorial",
-                  articleUrl: getPublicArticleShareUrl(
-                    article.id || articleIndex,
-                  ),
-                  articleExcerpt: articleShareExcerpt,
-                  articleImage: imageUrl || "",
-                  _id: `share-${sharePageId}`,
-                },
-              ],
-            };
-            pageNum++;
+            // Some articles intentionally skip the share card for pacing/visual layout.
+            const articleKeyForShare = normalizeArticleKey(
+              article.id || "",
+            );
+            const noSharePageArticleIds = new Set([
+              "being-mindful-of-good-moments-helps-me-through-difficult-times",
+            ]);
+
+            if (
+              !noSharePageArticleIds.has(articleKeyForShare)
+            ) {
+              const sharePageId = `article-${article.id}-share`;
+              newPages.push({
+                id: sharePageId,
+                pageNumber: pageNum,
+                type: "layout",
+                layoutId: "article-text-layout",
+                alt: `Share ${article.title}`,
+              });
+              newLayoutState[sharePageId] = {
+                blocks: [
+                  {
+                    type: "share",
+                    articleId: String(
+                      article.id || articleIndex,
+                    ),
+                    articleTitle:
+                      article.title || "this editorial",
+                    articleUrl: getPublicArticleShareUrl(
+                      article.id || articleIndex,
+                    ),
+                    articleExcerpt: articleShareExcerpt,
+                    articleImage: imageUrl || "",
+                    _id: `share-${sharePageId}`,
+                  },
+                ],
+              };
+              pageNum++;
+            }
 
             // Insert the editable/code-designed Breathtaking Awareness sign-up ad
             // after selected PHlip-side article share pages.
             // This is article-ID based, not page-number based, so each ad stays with
             // its assigned story even as new material is added to the front of the magazine.
             const breathtakingAwarenessAdArticleIds = new Set([
-              "my-delayed-ph-diagnosis-reveals-a-lesson-in-claiming-victory-over-loss",
-              "the-pandoras-box-of-making-plans-and-managing-friendships-with-ph",
-              "how-flashing-the-boobs-is-helping-to-save-womens-lives",
-              "a-ph-advocate-finds-hope-in-new-research-anxiety-at-the-airport",
-              "getting-through-the-fog-of-grief-to-see-clearly-on-the-other-side",
-              "the-high-cost-of-time-spent-managing-a-chronic-illness",
-              "being-mindful-of-good-moments-helps-me-through-difficult-times",
-              "when-coexisting-conditions-complicate-our-health-strategy",
-              "how-to-explain-the-complexities-of-pulmonary-hypertension-to-others",
-              "grieving-the-mom-i-used-to-be-before-ph-entered-my-life",
-              "how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds",
-              "im-learning-how-to-live-fully-not-just-survive-with-pulmonary-hypertension",
+              "legislative-advocacy-can-make-a-difference-for-ph-care",
             ]);
 
             if (
@@ -3010,7 +3147,93 @@ ${chapterDescription.body}`,
           // Finalize generated pages without page-number-specific deletions or moves.
           // Articles, images, title pages, story pages, and share pages are tied to article records,
           // not to fixed visible page numbers. Only the inside front cover keeps pageNumber 0.
-          let finalPages = [...newPages];
+          const isBlankGeneratedTextPage = (page: any) => {
+            if (lockedBlankBeforeDearReaderPageIds.has(page.id))
+              return false;
+            if (page.layoutId !== "article-text-layout")
+              return false;
+
+            const blocks = newLayoutState[page.id]?.blocks;
+            if (!Array.isArray(blocks) || blocks.length === 0)
+              return true;
+
+            return !blocks.some((block: any) => {
+              if (!block) return false;
+              if (block.type === "markdown") {
+                return (
+                  String(block.content || "")
+                    .replace(/<!--?[\s\S]*?-->/g, "")
+                    .trim().length > 0
+                );
+              }
+
+              if (
+                block.type === "image" ||
+                block.type === "share"
+              ) {
+                return true;
+              }
+
+              return Object.values(block).some((value) =>
+                typeof value === "string"
+                  ? value.trim().length > 0
+                  : !!value,
+              );
+            });
+          };
+
+          let finalPages = [...newPages].filter(
+            (page) => !isBlankGeneratedTextPage(page),
+          );
+
+          // Remove the empty/image-placeholder page that can appear immediately
+          // before the share card for this article. This keeps the share page
+          // attached to the article without leaving a blank left-side page.
+          const removeEmptyPageBeforeArticleShare = (
+            pages: any[],
+            articleId: string,
+          ) => {
+            const sharePageId = `article-${articleId}-share`;
+
+            return pages.filter((page, index) => {
+              const nextPage = pages[index + 1];
+              if (!nextPage || nextPage.id !== sharePageId)
+                return true;
+
+              const blocks =
+                newLayoutState[page.id]?.blocks || [];
+              const hasVisibleMarkdown = blocks.some(
+                (block: any) =>
+                  block?.type === "markdown"
+                    ? String(block.content || "")
+                        .replace(/<!--?[\s\S]*?-->/g, "")
+                        .trim().length > 0
+                    : false,
+              );
+              const hasShareBlock = blocks.some(
+                (block: any) => block?.type === "share",
+              );
+              const hasImageBlock = blocks.some(
+                (block: any) => block?.type === "image",
+              );
+
+              // Only remove blank/image-placeholder pages directly before the
+              // target share page. Real text/share content is preserved.
+              const isBlankOrImagePlaceholder =
+                !hasVisibleMarkdown &&
+                !hasShareBlock &&
+                (blocks.length === 0 ||
+                  page.layoutId === "article-image-layout" ||
+                  hasImageBlock);
+
+              return !isBlankOrImagePlaceholder;
+            });
+          };
+
+          finalPages = removeEmptyPageBeforeArticleShare(
+            finalPages,
+            "how-i-transitioned-from-an-iv-therapy-pump-to-oral-meds",
+          );
 
           let currentNum = 1;
           const oldToNewPageMap: Record<number, number> = {};
@@ -3032,41 +3255,6 @@ ${chapterDescription.body}`,
                 oldToNewPageMap[entry.pageNumber];
             }
           });
-
-          // Insert two blank pages after the last generated print/content page.
-          // These are not tied to fixed page numbers. They always follow the current
-          // final printed page, even when articles, ads, blanks, or chapters move.
-          const lastPrintPageNumber = Math.max(
-            ...finalPages
-              .filter((p) => p.id !== reservedPageId)
-              .map((p) => p.pageNumber),
-          );
-          const afterLastPrintBlankPageIds = [
-            "after-last-print-blank-page-1",
-            "after-last-print-blank-page-2",
-          ];
-
-          afterLastPrintBlankPageIds.forEach(
-            (blankPageId, index) => {
-              finalPages.push({
-                id: blankPageId,
-                pageNumber: lastPrintPageNumber + index + 1,
-                type: "layout",
-                layoutId: "article-text-layout",
-                alt: "Blank page",
-              });
-
-              newLayoutState[blankPageId] = {
-                blocks: [
-                  {
-                    type: "markdown",
-                    content: ``,
-                    _id: `md-${blankPageId}`,
-                  },
-                ],
-              };
-            },
-          );
 
           finalPages.sort(
             (a, b) => a.pageNumber - b.pageNumber,
@@ -3182,16 +3370,52 @@ ${chapterDescription.body}`,
           setLayoutState(newLayoutState);
           openSharedArticleIfPresent(finalPages);
         } else {
-          throw new Error("Failed to fetch magazine content");
+          throw new Error("Failed to fetch from GitHub");
         }
       } catch (err) {
-        console.error("Falling back to built-in magazine data:", err);
-        setViewerData(FALLBACK_MAGAZINE_DATA);
-        setMagazineData(FALLBACK_MAGAZINE_DATA.pages);
-        setTocData(FALLBACK_MAGAZINE_DATA.toc);
-        openSharedArticleIfPresent(
-          FALLBACK_MAGAZINE_DATA.pages,
-        );
+        console.error("Falling back to local data:", err);
+
+        try {
+          const viewerRes = await fetch(
+            getDataUrl("VIEWER_JSON"),
+          );
+          if (!viewerRes.ok) {
+            throw new Error(
+              "Failed to fetch local viewer.json",
+            );
+          }
+
+          const localViewer =
+            (await viewerRes.json()) as MagazineData;
+
+          if (
+            !localViewer ||
+            !Array.isArray(localViewer.pages) ||
+            localViewer.pages.length === 0
+          ) {
+            throw new Error("Local viewer.json has no pages");
+          }
+
+          setViewerData(localViewer);
+          setMagazineData(localViewer.pages);
+          setTocData(
+            Array.isArray(localViewer.toc)
+              ? localViewer.toc
+              : [],
+          );
+          openSharedArticleIfPresent(localViewer.pages);
+        } catch (localViewerErr) {
+          console.error(
+            "Falling back to built-in magazine data:",
+            localViewerErr,
+          );
+          setViewerData(FALLBACK_MAGAZINE_DATA);
+          setMagazineData(FALLBACK_MAGAZINE_DATA.pages);
+          setTocData(FALLBACK_MAGAZINE_DATA.toc);
+          openSharedArticleIfPresent(
+            FALLBACK_MAGAZINE_DATA.pages,
+          );
+        }
       }
 
       try {
@@ -3354,11 +3578,29 @@ ${chapterDescription.body}`,
   const issueNumber = viewerData?.issueNumber;
   const publicationDate = viewerData?.publicationDate;
 
-  // Determine if we should allow scrolling based on view mode.
-  const isSpread = isDesktop && !effectiveSinglePageMode;
-  // Scroll mode is only for ordinary single-page reading. A turned page must fit fully.
-  const isScrollMode =
-    appState === "reading" && !isSpread && !isMagazineTurn;
+  // Determine if we should render a two-page spread or a centered single page.
+  const isSpread =
+    readerMetrics.width >= AUTO_SINGLE_PAGE_BREAKPOINT &&
+    !effectiveSinglePageMode;
+
+  // Keep one-page mode centered and fully visible whether it is selected by the
+  // user or automatically forced by a narrow screen. Do not switch to a vertical
+  // scroll layout for normal one-page reading because that removes the visible
+  // background gap above/below the page.
+  const isScrollMode = false;
+
+  const readerVerticalGap =
+    appState === "reading"
+      ? effectiveSinglePageMode
+        ? Math.max(
+            12,
+            Math.min(22, readerMetrics.height * 0.022),
+          )
+        : Math.max(
+            16,
+            Math.min(30, readerMetrics.height * 0.026),
+          )
+      : 0;
 
   // Render variables to handle the scrolling container wrapper.
   // During a turn, the visible page is rotated inside ReadingView, so the
@@ -3383,7 +3625,7 @@ ${chapterDescription.body}`,
   return (
     <DndProvider backend={HTML5Backend}>
       <div
-        className="h-full w-full overflow-hidden relative"
+        className="h-full w-full overflow-hidden overflow-x-hidden relative"
         style={{ backgroundColor: "#2C241B" }}
       >
         <div
@@ -3449,6 +3691,10 @@ ${chapterDescription.body}`,
                 setIsSinglePageMode(newMode);
                 setTiltAngle(0);
 
+                if (newMode) {
+                  setShowExpandScreenNotice(false);
+                }
+
                 // When returning to two-page spread, normalize the current page to
                 // the left page of the spread so the current spread recenters cleanly.
                 if (!newMode && currentPage !== "cover") {
@@ -3484,17 +3730,45 @@ ${chapterDescription.body}`,
               searchQuery={searchQuery}
               onSearchQueryChange={handleSearchQueryChange}
             />
+
+            {isAutoSinglePageDueToNarrowScreen &&
+              showExpandScreenNotice && (
+                <div
+                  className="absolute bottom-4 left-1/2 z-[90] flex -translate-x-1/2 items-center gap-3 rounded-full border border-[#AF9355]/40 bg-[#0A1C27]/95 px-4 py-2 text-sm text-[#F8F3E8] shadow-lg backdrop-blur-md"
+                  role="status"
+                  aria-live="polite"
+                >
+                  <span>
+                    Expand screen size to see full view.
+                  </span>
+                  <button
+                    type="button"
+                    className="flex h-6 w-6 items-center justify-center rounded-full border border-[#AF9355]/50 text-[#AF9355] transition hover:bg-[#AF9355]/20"
+                    aria-label="Close screen size message"
+                    onClick={() =>
+                      setShowExpandScreenNotice(false)
+                    }
+                  >
+                    ×
+                  </button>
+                </div>
+              )}
           </>
         )}
 
         <main
+          onTouchStart={handleReaderTouchStart}
+          onTouchEnd={handleReaderTouchEnd}
           className={`absolute inset-0 flex justify-center ${
-            appState === "reading" ? "pt-16" : ""
-          } ${
             isScrollMode
               ? "items-start overflow-y-auto overflow-x-hidden"
               : "items-center overflow-hidden"
           }`}
+          style={{
+            paddingTop: toolbarHeight + readerVerticalGap,
+            paddingBottom: readerVerticalGap,
+            boxSizing: "border-box",
+          }}
           role="main"
         >
           <div
