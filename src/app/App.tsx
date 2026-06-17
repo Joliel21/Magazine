@@ -1501,6 +1501,50 @@ function App() {
               ? chapterDescriptionsRaw
               : {};
 
+          const resolveGithubContentUrl = (pathValue = "") => {
+            const cleanPath = String(pathValue || "")
+              .trim()
+              .replace(/^public\//, "")
+              .replace(/^\//, "");
+
+            if (!cleanPath) return "";
+            if (/^https?:\/\//i.test(cleanPath)) return cleanPath;
+
+            return BASE_RAW_URL + cleanPath;
+          };
+
+          const loadGithubMarkdown = async (pathValue = "") => {
+            const markdownUrl = resolveGithubContentUrl(pathValue);
+            if (!markdownUrl) return "";
+
+            try {
+              const markdownRes = await fetch(encodeURI(markdownUrl));
+              return markdownRes.ok ? await markdownRes.text() : "";
+            } catch (markdownErr) {
+              console.error("Failed to load GitHub markdown page:", markdownErr);
+              return "";
+            }
+          };
+
+          const normalizedChapterDescriptionDataBySlug: Record<
+            string,
+            { title: string; body: string }
+          > = {};
+
+          for (const [slug, rawDescription] of Object.entries(
+            chapterDescriptionDataBySlug as Record<string, any>,
+          )) {
+            const description = rawDescription || {};
+            const markdownBody = description.markdownPath
+              ? await loadGithubMarkdown(description.markdownPath)
+              : "";
+
+            normalizedChapterDescriptionDataBySlug[slug] = {
+              title: description.title || "",
+              body: markdownBody || description.body || "",
+            };
+          }
+
           const newPages: MagazinePage[] = [];
           const newToc: TOCEntry[] = [];
           const newLayoutState: Record<
@@ -1582,8 +1626,8 @@ function App() {
           const lockedBlankBeforeDearReaderPageIds =
             new Set<string>();
 
-          frontMatterPages.forEach((frontPage: any) => {
-            if (!frontPage || !frontPage.id) return;
+          for (const frontPage of frontMatterPages) {
+            if (!frontPage || !frontPage.id) continue;
 
             const pageId = String(frontPage.id);
             const pageNumber =
@@ -1603,6 +1647,25 @@ function App() {
               lockedBlankBeforeDearReaderPageIds.add(pageId);
             }
 
+            const markdownContent =
+              frontPage.markdownPath || frontPage.contentPath
+                ? await loadGithubMarkdown(
+                    frontPage.markdownPath || frontPage.contentPath,
+                  )
+                : "";
+
+            const frontPageBlocks = markdownContent
+              ? [
+                  {
+                    type: "markdown" as const,
+                    content: markdownContent,
+                    _id: `md-${pageId}`,
+                  },
+                ]
+              : Array.isArray(frontPage.blocks)
+                ? frontPage.blocks
+                : [];
+
             newPages.push({
               id: pageId,
               pageNumber,
@@ -1612,9 +1675,7 @@ function App() {
             });
 
             newLayoutState[pageId] = {
-              blocks: Array.isArray(frontPage.blocks)
-                ? frontPage.blocks
-                : [],
+              blocks: frontPageBlocks,
             };
 
             if (frontPage.toc?.title) {
@@ -1629,16 +1690,13 @@ function App() {
             if (typeof frontPage.pageNumber !== "number") {
               pageNum++;
             }
-          });
+          }
 
           const getChapterDescriptionData = (
             chapterSlug: string,
           ) => {
             const description =
-              (chapterDescriptionDataBySlug as Record<
-                string,
-                { title?: string; body?: string }
-              >)[chapterSlug];
+              normalizedChapterDescriptionDataBySlug[chapterSlug];
 
             if (!description?.title && !description?.body) {
               return null;
