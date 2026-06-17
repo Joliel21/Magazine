@@ -1,117 +1,141 @@
 /**
- * Runtime data-source helpers for The Words We Carry.
+ * Data Source Configuration
  *
- * Canonical content source:
- *   public/content/articles.json
- *   public/content/chapters.json
- *   public/content/articles/{chapterSlug}/{articleSlug}.md
+ * This file controls where the magazine reader loads content from in both:
+ * - standalone Vite preview/builds, and
+ * - WordPress plugin embeds.
  *
- * The reader uses /content paths and does not need dated issue folders.
+ * In WordPress, the PHP plugin passes URLs through window.theWordsWeCarryConfig.
+ * Always prefer those WordPress URLs when they exist.
  */
 
 declare global {
   interface Window {
     theWordsWeCarryConfig?: {
       configUrl?: string;
-      contentBaseUrl?: string;
-      magazineUrl?: string;
+      defaultConfigUrl?: string;
+      pluginUrl?: string;
+      assetsUrl?: string;
+      localManifestUrl?: string;
+      localViewerUrl?: string;
       articlesUrl?: string;
       chaptersUrl?: string;
+      baseRawUrl?: string;
+      frontMatterUrl?: string;
+      chapterDescriptionsUrl?: string;
     };
   }
 }
 
 export type DataFileType =
+  | "VIEWER_JSON"
   | "PUBLISH_MANIFEST_JSON"
   | "RUNTIME_CSS"
-  | "RUNTIME_JS";
+  | "RUNTIME_JS"
+  | "ARTICLES_JSON"
+  | "CHAPTERS_JSON"
+  | "FRONT_MATTER_JSON"
+  | "CHAPTER_DESCRIPTIONS_JSON"
+  | "BASE_RAW_URL";
 
-const DEFAULT_MAGAZINE_URL = "https://joliel21.github.io/Magazine/";
-const DEFAULT_RAW_PUBLIC_BASE_URL =
-  "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/";
+export const DATA_SOURCE_CONFIG = {
+  USE_EXTERNAL_URLS: true,
 
-const ensureTrailingSlash = (value: string) =>
-  value.endsWith("/") ? value : `${value}/`;
+  EXTERNAL_URLS: {
+    VIEWER_JSON:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/viewer.json",
+    PUBLISH_MANIFEST_JSON:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/publish_manifest.json",
+    RUNTIME_CSS:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/runtime.css",
+    RUNTIME_JS:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/runtime.js",
+    ARTICLES_JSON:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/articles.json",
+    CHAPTERS_JSON:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapters.json",
+    FRONT_MATTER_JSON:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/front-matter.json",
+    CHAPTER_DESCRIPTIONS_JSON:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapter-descriptions.json",
+    BASE_RAW_URL:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/",
+  },
 
-export function getSameOriginBaseUrl(): string {
-  if (typeof window === "undefined") return "/";
+  LOCAL_PATHS: {
+    VIEWER_JSON: "/viewer.json",
+    PUBLISH_MANIFEST_JSON: "/publish_manifest.json",
+    RUNTIME_CSS: "/runtime.css",
+    RUNTIME_JS: "/runtime.js",
+    ARTICLES_JSON: "/content/articles.json",
+    CHAPTERS_JSON: "/content/chapters.json",
+    FRONT_MATTER_JSON: "/content/front-matter.json",
+    CHAPTER_DESCRIPTIONS_JSON: "/content/chapter-descriptions.json",
+    BASE_RAW_URL: "/",
+  },
+};
 
-  const viteBase = import.meta.env.BASE_URL || "./";
-  return ensureTrailingSlash(new URL(viteBase, window.location.href).toString());
-}
+function getWordPressConfigUrl(fileType: DataFileType): string | null {
+  if (typeof window === "undefined") return null;
 
-export function getContentBaseUrl(): string {
-  if (typeof window === "undefined") return DEFAULT_RAW_PUBLIC_BASE_URL;
+  const wpConfig = window.theWordsWeCarryConfig;
+  if (!wpConfig) return null;
 
-  const config = window.theWordsWeCarryConfig;
-  if (config?.contentBaseUrl) {
-    return ensureTrailingSlash(config.contentBaseUrl);
+  switch (fileType) {
+    case "PUBLISH_MANIFEST_JSON":
+      return (
+        wpConfig.configUrl ||
+        wpConfig.localManifestUrl ||
+        wpConfig.defaultConfigUrl ||
+        null
+      );
+    case "VIEWER_JSON":
+      return wpConfig.localViewerUrl || null;
+    case "ARTICLES_JSON":
+      return (
+        wpConfig.articlesUrl ||
+        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/articles.json"
+      );
+    case "CHAPTERS_JSON":
+      return (
+        wpConfig.chaptersUrl ||
+        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapters.json"
+      );
+    case "FRONT_MATTER_JSON":
+      return (
+        wpConfig.frontMatterUrl ||
+        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/front-matter.json"
+      );
+    case "CHAPTER_DESCRIPTIONS_JSON":
+      return (
+        wpConfig.chapterDescriptionsUrl ||
+        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapter-descriptions.json"
+      );
+    case "BASE_RAW_URL":
+      return (
+        wpConfig.baseRawUrl ||
+        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/"
+      );
+    case "RUNTIME_CSS":
+      return wpConfig.assetsUrl ? `${wpConfig.assetsUrl}runtime.css` : null;
+    case "RUNTIME_JS":
+      return wpConfig.assetsUrl ? `${wpConfig.assetsUrl}runtime.js` : null;
+    default:
+      return null;
   }
-
-  const host = window.location.hostname.toLowerCase();
-  const isLocal =
-    host === "localhost" || host === "127.0.0.1" || host === "0.0.0.0";
-  const isGitHubPages = host.endsWith("github.io");
-
-  if (isLocal || isGitHubPages) {
-    return getSameOriginBaseUrl();
-  }
-
-  // WordPress/plugin embeds do not have /public/content locally unless provided
-  // through shortcode config, so default to the canonical GitHub raw content.
-  return DEFAULT_RAW_PUBLIC_BASE_URL;
-}
-
-export function getMagazineUrl(): string {
-  if (typeof window === "undefined") return DEFAULT_MAGAZINE_URL;
-
-  const config = window.theWordsWeCarryConfig;
-  if (config?.magazineUrl) return ensureTrailingSlash(config.magazineUrl);
-
-  const host = window.location.hostname.toLowerCase();
-  const isLocal =
-    host === "localhost" || host === "127.0.0.1" || host === "0.0.0.0";
-  const isGitHubPages = host.endsWith("github.io");
-
-  if (isLocal || isGitHubPages) return getSameOriginBaseUrl();
-  return DEFAULT_MAGAZINE_URL;
-}
-
-export function getArticlesUrl(): string {
-  const config = typeof window !== "undefined" ? window.theWordsWeCarryConfig : undefined;
-  if (config?.articlesUrl) return config.articlesUrl;
-  return new URL("content/articles.json", getContentBaseUrl()).toString();
-}
-
-export function getChaptersUrl(): string {
-  const config = typeof window !== "undefined" ? window.theWordsWeCarryConfig : undefined;
-  if (config?.chaptersUrl) return config.chaptersUrl;
-  return new URL("content/chapters.json", getContentBaseUrl()).toString();
-}
-
-export function resolvePublicUrl(value = ""): string {
-  const raw = String(value || "").trim();
-  if (!raw) return "";
-  if (/^(https?:|data:|blob:)/i.test(raw)) return encodeURI(raw);
-
-  const normalized = raw
-    .replace(/^public\//, "")
-    .replace(/^\/+/, "")
-    .replace(/^(\.\.\/)+/, "");
-
-  return encodeURI(new URL(normalized, getContentBaseUrl()).toString());
 }
 
 /**
- * Optional runtime files. These are not the content source.
+ * Get the URL for a data file.
+ * WordPress-localized URLs win over standalone defaults.
  */
 export function getDataUrl(fileType: DataFileType): string {
-  if (fileType === "PUBLISH_MANIFEST_JSON") {
-    const configUrl =
-      typeof window !== "undefined" ? window.theWordsWeCarryConfig?.configUrl : "";
-    return configUrl || new URL("publish_manifest.json", getContentBaseUrl()).toString();
+  const wpUrl = getWordPressConfigUrl(fileType);
+  if (wpUrl) return wpUrl;
+
+  if (DATA_SOURCE_CONFIG.USE_EXTERNAL_URLS) {
+    return DATA_SOURCE_CONFIG.EXTERNAL_URLS[fileType];
   }
 
-  const filename = fileType === "RUNTIME_CSS" ? "runtime.css" : "runtime.js";
-  return new URL(filename, getContentBaseUrl()).toString();
+  return DATA_SOURCE_CONFIG.LOCAL_PATHS[fileType];
 }
