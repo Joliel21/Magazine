@@ -2,9 +2,9 @@
 
 Thank you for reading *The Words We Carry*.
 
-This issue brings together stories, advocacy, reflection, and practical support for people whose lives are touched by pulmonary hypertension, scleroderma, chronic illness, caregiving, and the work of being heard.
+This issue brings together stories, advocacy, reflection, and practical support for those whose lives are affected by rare disease and chronic illness.
 
-Stay connected for future issues, new articles, podcast updates, advocacy resources, and ways to help carry this work forward.
+Stay connected for future issues, new articles, podcast updates, advocacy resources, and ways to help carry our words forward.
 
 ## [Sign Up for Updates](https://breathtakingawareness.com/sign-up/)
 
