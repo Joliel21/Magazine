@@ -1,0 +1,15 @@
+# Carry This Forward
+
+Thank you for reading *The Words We Carry*.
+
+This issue brings together stories, advocacy, reflection, and practical support for people whose lives are touched by pulmonary hypertension, scleroderma, chronic illness, caregiving, and the work of being heard.
+
+Stay connected for future issues, new articles, podcast updates, advocacy resources, and ways to help carry this work forward.
+
+## [Sign Up for Updates](https://breathtakingawareness.com/sign-up/)
+
+You can also [visit Breathtaking Awareness](https://breathtakingawareness.com/) or share this issue with someone who may need it.
+
+For permissions, licensing, media use, or reprint requests, contact [Jolie@BreathtakingAwareness.com](mailto:Jolie@BreathtakingAwareness.com).
+
+© 2026 Jolie Lizana / Breathtaking Awareness. All rights reserved. No part of this magazine may be copied, reproduced, scraped, republished, sold, or distributed without written permission, except brief quotations with attribution.
