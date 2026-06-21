@@ -6,7 +6,7 @@ Publication date: May 19, 2026; updated May 27, 2026
 
 ---
 
-Living with scleroderma and pulmonary arterial hypertension, along with the tangled gut, heart failure, and other complications they bring, makes keeping up with appointments, medications, side effects, and monitoring a full-time job.
+Living with scleroderma and pulmonary arterial hypertension, along with the complications they cause, makes keeping up with appointments, medications, side effects, and monitoring a full-time job.
 
 ## Acute Survival Mode
 
