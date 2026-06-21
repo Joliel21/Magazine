@@ -91,5 +91,53 @@
         "category": "back-matter"
       }
     }
+  ],
+  "readerContext": {
+    "issue": {
+      "issueTitle": "Breathtaking Awareness",
+      "spineText": "The Words We Carry • Volume I • 2025–2026",
+      "publisher": "Breathtaking Awareness",
+      "issueNumber": "Volume I",
+      "publicationDate": "2025–2026"
+    },
+    "cover": {
+      "brandLine1": "Breathtaking",
+      "brandLine2": "Awareness",
+      "title": "The Words We Carry",
+      "volume": "Volume I",
+      "logoUrl": "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/images/brand/Cover_Logo.png",
+      "logoAlt": "Breathtaking Awareness Logo"
+    },
+    "backCover": {
+      "authorName": "Jolie Lizana",
+      "authorImageUrl": "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/images/author/jolie-bday-dinner.jpg",
+      "authorImageAlt": "Jolie Lizana",
+      "bio": "Jolie Lizana is a patient advocate, writer, and speaker. She lives with pulmonary hypertension, heart failure, and systemic sclerosis. Jolie advocates for invisible, chronic, and rare diseases. Her medical and communication studies background gives her a two-point perspective and the communication skills needed to help bridge gaps between doctors and patients.\n\nAs the founder of Breathtaking Awareness, Jolie works to empower the pulmonary hypertension (PH) community through awareness, advocacy, education, and support. The platform helps people find resources, guidance, and community while recognizing their potential to advocate, connect, and support others by sharing their experiences, skills, and passions.",
+      "buttonText": "Sign Up for Updates",
+      "buttonUrl": "https://subscribepage.io/breathtaking-awareness",
+      "supportLine": "Future issues, article updates, podcast news, and advocacy resources."
+    }
+  },
+  "adPages": [
+    {
+      "id": "bta-signup-ad-legislative-advocacy",
+      "type": "ad",
+      "source": "github",
+      "layoutId": "breathtaking-awareness-ad",
+      "title": "Breathtaking Awareness",
+      "eyebrow": "Breathtaking Awareness",
+      "headline": "Advocate. Save a Life.",
+      "subheadline": "Sign up for the Monthly Newsletter or Meetings",
+      "buttonText": "Sign-up",
+      "buttonUrl": "https://breathtakingawareness.com/sign-up/",
+      "footer": "Education • Advocacy • Support • Storytelling",
+      "placement": {
+        "afterArticleId": "legislative-advocacy-can-make-a-difference-for-ph-care"
+      },
+      "analytics": {
+        "category": "bta-internal-ad",
+        "label": "BTA Sign-up Ad"
+      }
+    }
   ]
 }
