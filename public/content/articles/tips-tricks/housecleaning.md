@@ -1,6 +1,6 @@
 # Housecleaning
 
-**House Cleaning Tips and Tricks**
+**Tips and Tricks I Learned Along the Way**
 
 By Jolie Lizana
 
