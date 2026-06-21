@@ -5,7 +5,14 @@
       "pageNumber": 0,
       "layoutId": "inside-cover",
       "alt": "Editorial notice, disclaimer, publication information, and copyright",
-      "blocks": []
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-inside-front-cover-page"
+        }
+      ],
+      "markdownPath": "content/pages/front-matter/inside-front-cover.md"
     },
     {
       "id": "front-opener-page",
@@ -114,19 +121,74 @@
       "id": "volume-one-page",
       "layoutId": "volume-one-page",
       "alt": "Volume I introduction page",
-      "blocks": []
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-volume-one-page"
+        }
+      ],
+      "markdownPath": "content/pages/front-matter/volume-one.md"
     },
     {
       "id": "whats-inside-left-page",
       "layoutId": "whats-inside-left-page",
       "alt": "What's Inside left page",
-      "blocks": []
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-whats-inside-left-page"
+        }
+      ],
+      "markdownPath": "content/pages/front-matter/whats-inside-left.md"
     },
     {
       "id": "whats-inside-right-page",
       "layoutId": "whats-inside-right-page",
       "alt": "What's Inside contents page",
-      "blocks": []
+      "blocks": [
+        {
+          "type": "contents-item",
+          "title": "Beyond the Column",
+          "body": "Scleroderma Foundation of Greater Chicago pieces and reflections beyond the PH News column.",
+          "page": "10",
+          "icon": "column",
+          "_id": "contents-beyond-the-column"
+        },
+        {
+          "type": "contents-item",
+          "title": "The PHlip-side",
+          "body": "Pulmonary Hypertension News columns, advocacy lessons, and lived-experience reflections.",
+          "page": "18",
+          "icon": "phlip",
+          "_id": "contents-the-phlip-side"
+        },
+        {
+          "type": "contents-item",
+          "title": "Rants in Writing",
+          "body": "Personal essays, identity, grief, mental health, and survival after the crisis quiets down.",
+          "page": "174",
+          "icon": "rants",
+          "_id": "contents-rants-in-writing"
+        },
+        {
+          "type": "contents-item",
+          "title": "Tips & Tricks",
+          "body": "Practical patient and caregiver support for daily life with pulmonary hypertension.",
+          "page": "206",
+          "icon": "tips",
+          "_id": "contents-tips-tricks"
+        },
+        {
+          "type": "contents-item",
+          "title": "About the Author",
+          "body": "Jolie Lizana, Breathtaking Awareness, and the work behind this volume.",
+          "target": "back-cover",
+          "icon": "author",
+          "_id": "contents-about-the-author"
+        }
+      ]
     }
   ]
 }
