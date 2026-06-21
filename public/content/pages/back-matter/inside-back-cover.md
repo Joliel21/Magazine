@@ -8,8 +8,6 @@ Stay connected for future issues, new articles, podcast updates, advocacy resour
 
 ## [Sign Up for Updates](https://breathtakingawareness.com/sign-up/)
 
-You can also [visit Breathtaking Awareness](https://breathtakingawareness.com/) or share this issue with someone who may need it.
-
 For permissions, licensing, media use, or reprint requests, contact [Jolie@BreathtakingAwareness.com](mailto:Jolie@BreathtakingAwareness.com).
 
 © 2026 Jolie Lizana / Breathtaking Awareness. All rights reserved. No part of this magazine may be copied, reproduced, scraped, republished, sold, or distributed without written permission, except brief quotations with attribution.
