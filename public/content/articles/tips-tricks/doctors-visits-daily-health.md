@@ -1,6 +1,6 @@
 # Doctor’s Visits & Daily Health
 
-**Tips and tricks to help make visits easy**
+**Tips and tricks to help make the most of your appointments.**
 
 By Jolie Lizana
 
