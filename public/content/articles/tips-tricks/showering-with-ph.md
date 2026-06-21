@@ -1,6 +1,6 @@
 # Showering with PH
 
-**Showering can be exhausting. With long hair and IV pumps, it’s even more challenging.**
+**Showering can be exhausting.**
 
 By Jolie Lizana
 
