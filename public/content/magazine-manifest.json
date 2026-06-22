@@ -1,0 +1,148 @@
+{
+  "schemaVersion": "1.0.0",
+  "issueId": "the-words-we-carry-volume-1",
+  "title": "The Words We Carry",
+  "updated": "2026-06-21",
+  "sources": {
+    "wordpress": {
+      "enabled": true,
+      "priority": 1,
+      "role": "easy editing for articles, images, captions, video, podcast, ads, and quick changes"
+    },
+    "github": {
+      "enabled": true,
+      "priority": 2,
+      "role": "versioned content, designed pages, share pages, fallback/archive, and precise placement rules"
+    }
+  },
+  "placementRules": [],
+  "overrides": [],
+  "pageTypes": [
+    "article",
+    "page",
+    "front-matter",
+    "chapter-opener",
+    "ad",
+    "sponsor",
+    "video",
+    "podcast",
+    "media-page",
+    "share",
+    "custom",
+    "inside-back-cover",
+    "back-matter",
+    "sign-up",
+    "button",
+    "link"
+  ],
+  "rules": {
+    "wordpressFirst": true,
+    "githubFallback": true,
+    "preserveReaderVisuals": true,
+    "allowBeforeAfterReplaceHide": true,
+    "allowClickableItems": true,
+    "allowMediaEmbeds": true,
+    "allowAnalyticsMetadata": true,
+    "allowBackMatterPages": true
+  },
+  "notes": [
+    "Do not use this file to redesign the reader. It controls content source, placement, overrides, and future ads/media pages.",
+    "GitHub and WordPress can both provide pages. The resolver should produce one final page list for the reader.",
+    "Every clickable image/hotspot should include a clear label and ariaLabel.",
+    "Inside back cover pages should be added as backMatterPages with placement.before set to back-cover so they remain immediately before the physical back cover."
+  ],
+  "backMatterPages": [
+    {
+      "id": "inside-back-cover",
+      "type": "inside-back-cover",
+      "source": "github",
+      "title": "Carry This Forward",
+      "layoutId": "inside-back-cover",
+      "markdownPath": "content/pages/back-matter/inside-back-cover.md",
+      "alt": "Inside back cover with closing note, sign-up invitation, connection links, and copyright notice",
+      "toc": false,
+      "placement": {
+        "before": "back-cover"
+      },
+      "buttonText": "Sign Up for Updates",
+      "buttonUrl": "https://breathtakingawareness.com/sign-up/",
+      "links": [
+        {
+          "label": "Sign Up for Updates",
+          "url": "https://breathtakingawareness.com/sign-up/",
+          "ariaLabel": "Sign up for Breathtaking Awareness updates",
+          "analyticsEvent": "signup_clicked"
+        },
+        {
+          "label": "Visit Breathtaking Awareness",
+          "url": "https://breathtakingawareness.com/",
+          "ariaLabel": "Visit the Breathtaking Awareness website",
+          "analyticsEvent": "link_clicked"
+        },
+        {
+          "label": "Contact for permissions",
+          "url": "mailto:Jolie@BreathtakingAwareness.com",
+          "ariaLabel": "Email Jolie Lizana for permissions",
+          "analyticsEvent": "permissions_contact_clicked"
+        }
+      ],
+      "analytics": {
+        "label": "Inside Back Cover",
+        "category": "back-matter"
+      }
+    }
+  ],
+  "readerContext": {
+    "issue": {
+      "issueTitle": "Breathtaking Awareness",
+      "spineText": "The Words We Carry • Volume I • 2025–2026",
+      "publisher": "Breathtaking Awareness",
+      "issueNumber": "Volume I",
+      "publicationDate": "2025–2026"
+    },
+    "cover": {
+      "brandLine1": "Breathtaking",
+      "brandLine2": "Awareness",
+      "title": "The Words We Carry",
+      "volume": "Volume I",
+      "logoUrl": "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/images/brand/Cover_Logo.png",
+      "logoAlt": "Breathtaking Awareness Logo"
+    },
+    "backCover": {
+      "authorName": "Jolie Lizana",
+      "authorImageUrl": "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/images/author/jolie-bday-dinner.jpg",
+      "authorImageAlt": "Jolie Lizana",
+      "bio": "Jolie Lizana is a patient advocate, writer, and speaker. She lives with pulmonary hypertension, heart failure, and systemic sclerosis. Jolie advocates for invisible, chronic, and rare diseases. Her medical and communication studies background gives her a two-point perspective and the communication skills needed to help bridge gaps between doctors and patients.\n\nAs the founder of Breathtaking Awareness, Jolie works to empower the pulmonary hypertension (PH) community through awareness, advocacy, education, and support. The platform helps people find resources, guidance, and community while recognizing their potential to advocate, connect, and support others by sharing their experiences, skills, and passions.",
+      "buttonText": "Sign Up for Updates",
+      "buttonUrl": "https://subscribepage.io/breathtaking-awareness",
+      "supportLine": "Future issues, article updates, podcast news, and advocacy resources."
+    },
+    "topBar": {
+      "brandLabel": "Breathtaking Awareness",
+      "logoUrl": "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/images/brand/gold-logo.png",
+      "logoAlt": "Breathtaking Awareness"
+    }
+  },
+  "adPages": [
+    {
+      "id": "bta-signup-ad-legislative-advocacy",
+      "type": "ad",
+      "source": "github",
+      "layoutId": "breathtaking-awareness-ad",
+      "title": "Breathtaking Awareness",
+      "eyebrow": "Breathtaking Awareness",
+      "headline": "Advocate. Save a Life.",
+      "subheadline": "Sign up for the Monthly Newsletter or Meetings",
+      "buttonText": "Sign-up",
+      "buttonUrl": "https://breathtakingawareness.com/sign-up/",
+      "footer": "Education • Advocacy • Support • Storytelling",
+      "placement": {
+        "afterArticleId": "legislative-advocacy-can-make-a-difference-for-ph-care"
+      },
+      "analytics": {
+        "category": "bta-internal-ad",
+        "label": "BTA Sign-up Ad"
+      }
+    }
+  ]
+}
