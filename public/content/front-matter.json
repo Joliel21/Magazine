@@ -1,194 +1,168 @@
-{
-  "pages": [
-    {
-      "id": "inside-front-cover-page",
-      "pageNumber": 0,
-      "layoutId": "inside-cover",
-      "alt": "Editorial notice, disclaimer, publication information, and copyright",
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-inside-front-cover-page"
-        }
-      ],
-      "markdownPath": "content/pages/front-matter/inside-front-cover.md"
-    },
-    {
-      "id": "front-opener-page",
-      "layoutId": "article-text-layout",
-      "alt": "Breathtaking Awareness: The Words We Carry opening page",
-      "toc": {
-        "id": "toc-front-opener",
-        "title": "The Words We Carry",
-        "level": 0
-      },
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-front-opener-page"
-        }
-      ],
-      "markdownPath": "content/pages/front-matter/front-opener.md"
-    },
-    {
-      "id": "locked-blank-before-dear-reader-page",
-      "layoutId": "article-text-layout",
-      "alt": "Locked blank page before Dear Reader",
-      "preserveIfBlank": true,
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-locked-blank-before-dear-reader-page"
-        }
-      ]
-    },
-    {
-      "id": "welcome-to-breathtaking-awareness",
-      "layoutId": "article-text-layout",
-      "alt": "Welcome to Breathtaking Awareness",
-      "toc": {
-        "id": "toc-welcome",
-        "title": "Welcome to Breathtaking Awareness",
-        "level": 0
-      },
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-welcome-to-breathtaking-awareness"
-        }
-      ],
-      "markdownPath": "content/pages/front-matter/welcome-to-breathtaking-awareness.md"
-    },
-    {
-      "id": "about-breathtaking-awareness-page",
-      "layoutId": "article-text-layout",
-      "alt": "About Breathtaking Awareness",
-      "toc": {
-        "id": "toc-about-breathtaking-awareness",
-        "title": "About Breathtaking Awareness",
-        "level": 0
-      },
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-about-breathtaking-awareness-page"
-        }
-      ],
-      "markdownPath": "content/pages/front-matter/about-breathtaking-awareness.md"
-    },
-    {
-      "id": "mission-statement-page",
-      "layoutId": "article-text-layout",
-      "alt": "Mission Statement",
-      "toc": {
-        "id": "toc-mission-statement",
-        "title": "Mission Statement",
-        "level": 0
-      },
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-mission-statement-page"
-        }
-      ],
-      "markdownPath": "content/pages/front-matter/mission-statement.md"
-    },
-    {
-      "id": "how-to-use-this-volume-page",
-      "layoutId": "article-text-layout",
-      "alt": "How to Use This Volume",
-      "toc": {
-        "id": "toc-how-to-use-this-volume",
-        "title": "How to Use This Volume",
-        "level": 0
-      },
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-how-to-use-this-volume-page"
-        }
-      ],
-      "markdownPath": "content/pages/front-matter/how-to-use-this-volume.md"
-    },
-    {
-      "id": "volume-one-page",
-      "layoutId": "volume-one-page",
-      "alt": "Volume I introduction page",
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-volume-one-page"
-        }
-      ],
-      "markdownPath": "content/pages/front-matter/volume-one.md"
-    },
-    {
-      "id": "whats-inside-left-page",
-      "layoutId": "whats-inside-left-page",
-      "alt": "What's Inside left page",
-      "blocks": [
-        {
-          "type": "markdown",
-          "content": "",
-          "_id": "md-whats-inside-left-page"
-        }
-      ],
-      "markdownPath": "content/pages/front-matter/whats-inside-left.md"
-    },
-    {
-      "id": "whats-inside-right-page",
-      "layoutId": "whats-inside-right-page",
-      "alt": "What's Inside contents page",
-      "blocks": [
-        {
-          "type": "contents-item",
-          "title": "Beyond the Column",
-          "body": "Scleroderma Foundation of Greater Chicago pieces and reflections beyond the PH News column.",
-          "page": "10",
-          "icon": "column",
-          "_id": "contents-beyond-the-column"
-        },
-        {
-          "type": "contents-item",
-          "title": "The PHlip-side",
-          "body": "Pulmonary Hypertension News columns, advocacy lessons, and lived-experience reflections.",
-          "page": "18",
-          "icon": "phlip",
-          "_id": "contents-the-phlip-side"
-        },
-        {
-          "type": "contents-item",
-          "title": "Rants in Writing",
-          "body": "Personal essays, identity, grief, mental health, and survival after the crisis quiets down.",
-          "page": "174",
-          "icon": "rants",
-          "_id": "contents-rants-in-writing"
-        },
-        {
-          "type": "contents-item",
-          "title": "Tips & Tricks",
-          "body": "Practical patient and caregiver support for daily life with pulmonary hypertension.",
-          "page": "206",
-          "icon": "tips",
-          "_id": "contents-tips-tricks"
-        },
-        {
-          "type": "contents-item",
-          "title": "About the Author",
-          "body": "Jolie Lizana, Breathtaking Awareness, and the work behind this volume.",
-          "target": "back-cover",
-          "icon": "author",
-          "_id": "contents-about-the-author"
-        }
-      ]
-    }
-  ]
+import React from "react";
+
+interface MagazineCoverContext {
+  brandLine1?: string;
+  brandLine2?: string;
+  title?: string;
+  volume?: string;
+  logoUrl?: string;
+  logoAlt?: string;
 }
+
+interface MagazineCoverProps {
+  issueTitle?: string;
+  className?: string;
+  coverContext?: MagazineCoverContext;
+}
+
+function CoverLogo({
+  logoUrl,
+  logoAlt,
+}: {
+  logoUrl?: string;
+  logoAlt?: string;
+}) {
+  if (!logoUrl) return null;
+
+  return (
+    <img
+      src={logoUrl}
+      alt={logoAlt || ""}
+      className="mt-1"
+      style={{
+        width: "170px",
+        height: "auto",
+        objectFit: "contain",
+      }}
+    />
+  );
+}
+
+function toTitleCase(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+export const MagazineCover: React.FC<MagazineCoverProps> = ({
+  issueTitle = "",
+  className = "",
+  coverContext,
+}) => {
+  const brandLine1 = coverContext?.brandLine1 || "";
+  const brandLine2 = coverContext?.brandLine2 || "";
+  const title = coverContext?.title || issueTitle || "";
+  const volume = coverContext?.volume || "";
+
+  return (
+    <>
+      <style>
+        {`
+          @font-face {
+            font-family: "Priestacy";
+            src: url("/fonts/Priestacy.otf") format("opentype");
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+          }
+        `}
+      </style>
+
+      <div
+        className={`relative w-full h-full bg-[#0A1C27] ${className}`}
+        style={{ width: "100%", height: "100%" }}
+      >
+        <div className="relative w-full h-full flex flex-col items-center justify-center bg-[#0A1C27] overflow-hidden text-center">
+          <div className="absolute inset-0 bg-[#0A1C27]" />
+
+          <div
+            className="absolute inset-0 opacity-90"
+            style={{
+              background:
+                "radial-gradient(circle at 80% 18%, rgba(43,155,192,0.16), transparent 34%), radial-gradient(circle at 12% 82%, rgba(0,95,115,0.22), transparent 38%), linear-gradient(180deg, #01101C 0%, #0A1C27 48%, #01101C 100%)",
+            }}
+          />
+
+          <div className="absolute left-[64px] top-[72px] h-[1px] w-[130px] bg-[#AF9355]/65 z-10" />
+          <div className="absolute -right-[120px] top-[-110px] h-[330px] w-[330px] rounded-full border border-[#267999]/35 z-10" />
+          <div className="absolute -left-[160px] bottom-[-150px] h-[360px] w-[360px] rounded-full border border-[#267999]/32 z-10" />
+          <div className="absolute bottom-[24px] right-[-42px] h-[1px] w-[210px] rotate-[-45deg] bg-[#AF9355]/75 z-10" />
+
+          <div className="absolute z-20 left-0 right-0 top-[118px] flex flex-col items-center w-full px-10">
+            <h1
+              className="flex flex-col gap-4 text-center tracking-widest"
+              style={{
+                color: "#AF9355",
+                textShadow: "0 3px 12px rgba(0,0,0,0.75)",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "'Priestacy', var(--font-serif-primary), serif",
+                  fontSize: "3rem",
+                  lineHeight: 1.1,
+                  fontWeight: 400,
+                }}
+              >
+                {toTitleCase(brandLine1)}
+              </span>
+
+              <span
+                style={{
+                  fontFamily: "'Priestacy', var(--font-serif-primary), serif",
+                  fontSize: "3rem",
+                  lineHeight: 1.1,
+                  fontWeight: 400,
+                }}
+              >
+                {toTitleCase(brandLine2)}
+              </span>
+            </h1>
+
+            <div className="w-[260px] h-[2px] bg-[#AF9355] mt-12 mb-9" />
+
+            <h2
+              className="text-center"
+              style={{
+                color: "#F8F3E8",
+                fontFamily:
+                  "var(--font-serif-primary), Georgia, 'Times New Roman', serif",
+                fontSize: "1.7rem",
+                lineHeight: 1.08,
+                fontWeight: 600,
+                textShadow: "0 3px 12px rgba(0,0,0,0.75)",
+              }}
+            >
+              {title}
+            </h2>
+
+            <div className="w-[150px] h-[1px] bg-[#AF9355]/75 mt-8 mb-6" />
+
+            <div
+              className="text-center uppercase"
+              style={{
+                color: "#F8F3E8",
+                fontFamily: "'Arial Narrow', Arial, sans-serif",
+                fontSize: "0.86rem",
+                lineHeight: 1.2,
+                fontWeight: 700,
+                letterSpacing: "0.18em",
+                textShadow: "0 3px 12px rgba(0,0,0,0.75)",
+              }}
+            >
+              {volume}
+            </div>
+          </div>
+
+          {/* Positioned Logo at the bottom of the cover */}
+          <div className="absolute z-20 bottom-[12px] left-0 right-0 flex justify-center w-full px-10">
+            <CoverLogo
+              logoUrl={coverContext?.logoUrl}
+              logoAlt={coverContext?.logoAlt}
+            />
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
