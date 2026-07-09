@@ -12,6 +12,14 @@ All original content, articles, editorials, designs, graphics, and materials pub
 
 
 
+
+
+
+
+
+
+
+
 ## Publication Information
 
 **Publication:** Breathtaking Awareness Magazine  
