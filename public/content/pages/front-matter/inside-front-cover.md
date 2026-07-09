@@ -10,7 +10,12 @@ Patient stories and personal experiences are unique to each individual. Outcomes
 
 All original content, articles, editorials, designs, graphics, and materials published by Breathtaking Awareness remain the intellectual property of their respective authors and rights holders unless otherwise noted. No portion of this publication may be reproduced, distributed, republished, modified, or used commercially without prior written permission from the copyright holder.
 
+<br />
+<br />
 
+---
+
+<br />
 
 ## Publication Information
 
