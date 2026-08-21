@@ -1,0 +1,88 @@
+{
+  "version": "2026-08-21",
+  "section": {
+    "id": "ph-and-meds",
+    "title": "PH & Meds",
+    "eyebrow": "Breathtaking Awareness Education",
+    "description": "Magazine-ready educational spreads based on the What is PH?, More on PH, and Meds sections of BreathtakingAwareness.com.",
+    "sourceWebsite": "https://breathtakingawareness.com/",
+    "medicalDisclaimer": "For education and advocacy only. This content is not a substitute for diagnosis, treatment, medication instructions, or emergency medical care. PH-specific treatment decisions should be made with a qualified medical professional, preferably a pulmonary hypertension specialist."
+  },
+  "spreads": [
+    {
+      "id": "what-is-ph",
+      "title": "What Is PH?",
+      "sourceUrl": "https://breathtakingawareness.com/breathtakingawareness/what-is-ph/",
+      "pageCount": 2,
+      "pages": [
+        {
+          "id": "what-is-ph-left",
+          "side": "left",
+          "markdownPath": "content/pages/ph-meds/what-is-ph-left.md",
+          "tocTitle": "What Is PH?"
+        },
+        {
+          "id": "what-is-ph-right",
+          "side": "right",
+          "markdownPath": "content/pages/ph-meds/what-is-ph-right.md"
+        }
+      ]
+    },
+    {
+      "id": "more-on-ph",
+      "title": "More on PH",
+      "sourceUrl": "https://breathtakingawareness.com/breathtakingawareness/what-is-ph/more-on-ph/",
+      "pageCount": 2,
+      "pages": [
+        {
+          "id": "more-on-ph-left",
+          "side": "left",
+          "markdownPath": "content/pages/ph-meds/more-on-ph-left.md",
+          "tocTitle": "More on PH"
+        },
+        {
+          "id": "more-on-ph-right",
+          "side": "right",
+          "markdownPath": "content/pages/ph-meds/more-on-ph-right.md"
+        }
+      ]
+    },
+    {
+      "id": "meds",
+      "title": "Meds",
+      "sourceUrl": "https://breathtakingawareness.com/breathtakingawareness/meds/",
+      "pageCount": 2,
+      "pages": [
+        {
+          "id": "meds-left",
+          "side": "left",
+          "markdownPath": "content/pages/ph-meds/meds-left.md",
+          "tocTitle": "Meds"
+        },
+        {
+          "id": "meds-right",
+          "side": "right",
+          "markdownPath": "content/pages/ph-meds/meds-right.md"
+        }
+      ]
+    }
+  ],
+  "references": [
+    {
+      "label": "Breathtaking Awareness — Home",
+      "url": "https://breathtakingawareness.com/"
+    },
+    {
+      "label": "Breathtaking Awareness — What Is PH?",
+      "url": "https://breathtakingawareness.com/breathtakingawareness/what-is-ph/"
+    },
+    {
+      "label": "Breathtaking Awareness — More on PH",
+      "url": "https://breathtakingawareness.com/breathtakingawareness/what-is-ph/more-on-ph/"
+    },
+    {
+      "label": "Breathtaking Awareness — Meds",
+      "url": "https://breathtakingawareness.com/breathtakingawareness/meds/"
+    }
+  ]
+}

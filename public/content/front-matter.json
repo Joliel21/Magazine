@@ -189,6 +189,99 @@
           "_id": "contents-about-the-author"
         }
       ]
+    },
+    {
+      "id": "what-is-ph-left",
+      "layoutId": "article-text-layout",
+      "alt": "What Is Pulmonary Hypertension?",
+      "toc": {
+        "id": "toc-what-is-ph",
+        "title": "What Is PH?",
+        "level": 0
+      },
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-what-is-ph-left"
+        }
+      ],
+      "markdownPath": "content/pages/ph-meds/what-is-ph-left.md"
+    },
+    {
+      "id": "what-is-ph-right",
+      "layoutId": "article-text-layout",
+      "alt": "How pulmonary hypertension is diagnosed",
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-what-is-ph-right"
+        }
+      ],
+      "markdownPath": "content/pages/ph-meds/what-is-ph-right.md"
+    },
+    {
+      "id": "more-on-ph-left",
+      "layoutId": "article-text-layout",
+      "alt": "The five clinical groups of pulmonary hypertension",
+      "toc": {
+        "id": "toc-more-on-ph",
+        "title": "More on PH",
+        "level": 0
+      },
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-more-on-ph-left"
+        }
+      ],
+      "markdownPath": "content/pages/ph-meds/more-on-ph-left.md"
+    },
+    {
+      "id": "more-on-ph-right",
+      "layoutId": "article-text-layout",
+      "alt": "WHO functional class and daily life with pulmonary hypertension",
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-more-on-ph-right"
+        }
+      ],
+      "markdownPath": "content/pages/ph-meds/more-on-ph-right.md"
+    },
+    {
+      "id": "meds-left",
+      "layoutId": "article-text-layout",
+      "alt": "Pulmonary hypertension medication treatment pathways",
+      "toc": {
+        "id": "toc-ph-meds",
+        "title": "Meds",
+        "level": 0
+      },
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-meds-left"
+        }
+      ],
+      "markdownPath": "content/pages/ph-meds/meds-left.md"
+    },
+    {
+      "id": "meds-right",
+      "layoutId": "article-text-layout",
+      "alt": "Pulmonary hypertension medication safety, monitoring, and self-advocacy",
+      "blocks": [
+        {
+          "type": "markdown",
+          "content": "",
+          "_id": "md-meds-right"
+        }
+      ],
+      "markdownPath": "content/pages/ph-meds/meds-right.md"
     }
   ]
 }
