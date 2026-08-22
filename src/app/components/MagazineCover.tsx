@@ -6,8 +6,7 @@ interface MagazineCoverProps {
 }
 
 const LOGO_IMAGE_SOURCES = [
-  "/images/brand/Cover_Logo.png",
-  "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/images/brand/Cover_Logo.png",
+  "https://raw.githubusercontent.com/Joliel21/RRM/main/magazine-source/public/images/brand/rare-revolution-trademark-logo.png",
 ];
 
 function CoverLogo() {
@@ -22,7 +21,7 @@ function CoverLogo() {
   return (
     <img
       src={LOGO_IMAGE_SOURCES[sourceIndex]}
-      alt="Breathtaking Awareness Logo"
+      alt="RARE Revolution Magazine Logo"
       onError={handleError}
       className="mt-1"
       style={{
@@ -43,20 +42,6 @@ export const MagazineCover: React.FC<MagazineCoverProps> = ({
       className={`relative w-full h-full bg-[#0A1C27] ${className}`}
       style={{ width: "100%", height: "100%" }}
     >
-      <style>
-        {`
-          @font-face {
-            font-family: "Priestacy";
-            src:
-              url("/fonts/Priestacy.otf") format("opentype"),
-              url("https://raw.githubusercontent.com/Joliel21/Magazine/main/public/fonts/Priestacy.otf") format("opentype");
-            font-weight: 400;
-            font-style: normal;
-            font-display: block;
-          }
-        `}
-      </style>
-
       <div className="relative w-full h-full flex flex-col items-center justify-center bg-[#0A1C27] overflow-hidden text-center">
         <div className="absolute inset-0 bg-[#0A1C27]" />
 
@@ -83,7 +68,7 @@ export const MagazineCover: React.FC<MagazineCoverProps> = ({
           >
             <span
               style={{
-                fontFamily: "Priestacy, cursive",
+                fontFamily: "'Pinyon Script', cursive",
                 fontSize: "4.55rem",
                 lineHeight: 0.78,
                 fontWeight: 400,
@@ -94,7 +79,7 @@ export const MagazineCover: React.FC<MagazineCoverProps> = ({
 
             <span
               style={{
-                fontFamily: "Priestacy, cursive",
+                fontFamily: "'Pinyon Script', cursive",
                 fontSize: "4.55rem",
                 lineHeight: 0.78,
                 fontWeight: 400,
