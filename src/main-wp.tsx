@@ -1,7 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "@/app/App";
+import { installRrmRuntime } from "@/app/config/rrm-runtime";
 import "@/styles/index.css";
+
+installRrmRuntime();
 
 const ROOT_ID = "the-words-we-carry-root";
 
