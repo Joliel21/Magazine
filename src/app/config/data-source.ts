@@ -23,6 +23,9 @@ declare global {
       baseRawUrl?: string;
       frontMatterUrl?: string;
       chapterDescriptionsUrl?: string;
+      magazineManifestUrl?: string;
+      wordpressMagazineUrl?: string;
+      analyticsUrl?: string;
     };
   }
 }
@@ -36,10 +39,13 @@ export type DataFileType =
   | "CHAPTERS_JSON"
   | "FRONT_MATTER_JSON"
   | "CHAPTER_DESCRIPTIONS_JSON"
+  | "MAGAZINE_MANIFEST_JSON"
+  | "WORDPRESS_MAGAZINE_JSON"
+  | "ANALYTICS_URL"
   | "BASE_RAW_URL";
 
 export const DATA_SOURCE_CONFIG = {
-  USE_EXTERNAL_URLS: true,
+  USE_EXTERNAL_URLS: false,
 
   EXTERNAL_URLS: {
     VIEWER_JSON:
@@ -58,6 +64,10 @@ export const DATA_SOURCE_CONFIG = {
       "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/front-matter.json",
     CHAPTER_DESCRIPTIONS_JSON:
       "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapter-descriptions.json",
+    MAGAZINE_MANIFEST_JSON:
+      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/magazine-manifest.json",
+    WORDPRESS_MAGAZINE_JSON: "",
+    ANALYTICS_URL: "",
     BASE_RAW_URL:
       "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/",
   },
@@ -71,6 +81,9 @@ export const DATA_SOURCE_CONFIG = {
     CHAPTERS_JSON: "/content/chapters.json",
     FRONT_MATTER_JSON: "/content/front-matter.json",
     CHAPTER_DESCRIPTIONS_JSON: "/content/chapter-descriptions.json",
+    MAGAZINE_MANIFEST_JSON: "/content/magazine-manifest.json",
+    WORDPRESS_MAGAZINE_JSON: "",
+    ANALYTICS_URL: "",
     BASE_RAW_URL: "/",
   },
 };
@@ -111,6 +124,15 @@ function getWordPressConfigUrl(fileType: DataFileType): string | null {
         wpConfig.chapterDescriptionsUrl ||
         "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapter-descriptions.json"
       );
+    case "MAGAZINE_MANIFEST_JSON":
+      return (
+        wpConfig.magazineManifestUrl ||
+        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/magazine-manifest.json"
+      );
+    case "WORDPRESS_MAGAZINE_JSON":
+      return wpConfig.wordpressMagazineUrl || null;
+    case "ANALYTICS_URL":
+      return wpConfig.analyticsUrl || null;
     case "BASE_RAW_URL":
       return (
         wpConfig.baseRawUrl ||
