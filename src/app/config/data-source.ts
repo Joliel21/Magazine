@@ -44,32 +44,28 @@ export type DataFileType =
   | "ANALYTICS_URL"
   | "BASE_RAW_URL";
 
+const RRM_PUBLIC_BASE =
+  "https://raw.githubusercontent.com/Joliel21/RRM/main/magazine-source/public/";
+const EMPTY_ARRAY_JSON = "data:application/json,%5B%5D";
+const EMPTY_OBJECT_JSON = "data:application/json,%7B%7D";
+
 export const DATA_SOURCE_CONFIG = {
-  USE_EXTERNAL_URLS: false,
+  // Standalone builds now use Joliel21/RRM as the reader content repository.
+  USE_EXTERNAL_URLS: true,
 
   EXTERNAL_URLS: {
-    VIEWER_JSON:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/viewer.json",
-    PUBLISH_MANIFEST_JSON:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/publish_manifest.json",
-    RUNTIME_CSS:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/runtime.css",
-    RUNTIME_JS:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/runtime.js",
-    ARTICLES_JSON:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/articles.json",
-    CHAPTERS_JSON:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapters.json",
-    FRONT_MATTER_JSON:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/front-matter.json",
-    CHAPTER_DESCRIPTIONS_JSON:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapter-descriptions.json",
-    MAGAZINE_MANIFEST_JSON:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/magazine-manifest.json",
+    VIEWER_JSON: EMPTY_OBJECT_JSON,
+    PUBLISH_MANIFEST_JSON: `${RRM_PUBLIC_BASE}publish_manifest.json`,
+    RUNTIME_CSS: "data:text/css,",
+    RUNTIME_JS: "data:text/javascript,",
+    ARTICLES_JSON: EMPTY_ARRAY_JSON,
+    CHAPTERS_JSON: EMPTY_ARRAY_JSON,
+    FRONT_MATTER_JSON: `${RRM_PUBLIC_BASE}content/front-matter.json`,
+    CHAPTER_DESCRIPTIONS_JSON: EMPTY_OBJECT_JSON,
+    MAGAZINE_MANIFEST_JSON: EMPTY_OBJECT_JSON,
     WORDPRESS_MAGAZINE_JSON: "",
     ANALYTICS_URL: "",
-    BASE_RAW_URL:
-      "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/",
+    BASE_RAW_URL: RRM_PUBLIC_BASE,
   },
 
   LOCAL_PATHS: {
@@ -105,43 +101,35 @@ function getWordPressConfigUrl(fileType: DataFileType): string | null {
     case "VIEWER_JSON":
       return wpConfig.localViewerUrl || null;
     case "ARTICLES_JSON":
-      return (
-        wpConfig.articlesUrl ||
-        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/articles.json"
-      );
+      return wpConfig.articlesUrl || DATA_SOURCE_CONFIG.EXTERNAL_URLS.ARTICLES_JSON;
     case "CHAPTERS_JSON":
-      return (
-        wpConfig.chaptersUrl ||
-        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapters.json"
-      );
+      return wpConfig.chaptersUrl || DATA_SOURCE_CONFIG.EXTERNAL_URLS.CHAPTERS_JSON;
     case "FRONT_MATTER_JSON":
-      return (
-        wpConfig.frontMatterUrl ||
-        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/front-matter.json"
-      );
+      return wpConfig.frontMatterUrl || DATA_SOURCE_CONFIG.EXTERNAL_URLS.FRONT_MATTER_JSON;
     case "CHAPTER_DESCRIPTIONS_JSON":
       return (
         wpConfig.chapterDescriptionsUrl ||
-        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/chapter-descriptions.json"
+        DATA_SOURCE_CONFIG.EXTERNAL_URLS.CHAPTER_DESCRIPTIONS_JSON
       );
     case "MAGAZINE_MANIFEST_JSON":
       return (
         wpConfig.magazineManifestUrl ||
-        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/content/magazine-manifest.json"
+        DATA_SOURCE_CONFIG.EXTERNAL_URLS.MAGAZINE_MANIFEST_JSON
       );
     case "WORDPRESS_MAGAZINE_JSON":
       return wpConfig.wordpressMagazineUrl || null;
     case "ANALYTICS_URL":
       return wpConfig.analyticsUrl || null;
     case "BASE_RAW_URL":
-      return (
-        wpConfig.baseRawUrl ||
-        "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/"
-      );
+      return wpConfig.baseRawUrl || DATA_SOURCE_CONFIG.EXTERNAL_URLS.BASE_RAW_URL;
     case "RUNTIME_CSS":
-      return wpConfig.assetsUrl ? `${wpConfig.assetsUrl}runtime.css` : null;
+      return wpConfig.assetsUrl
+        ? `${wpConfig.assetsUrl}runtime.css`
+        : DATA_SOURCE_CONFIG.EXTERNAL_URLS.RUNTIME_CSS;
     case "RUNTIME_JS":
-      return wpConfig.assetsUrl ? `${wpConfig.assetsUrl}runtime.js` : null;
+      return wpConfig.assetsUrl
+        ? `${wpConfig.assetsUrl}runtime.js`
+        : DATA_SOURCE_CONFIG.EXTERNAL_URLS.RUNTIME_JS;
     default:
       return null;
   }
