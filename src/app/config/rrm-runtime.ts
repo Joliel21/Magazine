@@ -13,6 +13,20 @@ const PATH_ALIASES: Record<string, string> = {
     "images/rare-pages/media-centre-spread.png",
 };
 
+const RRM_DATA_ROUTES: Record<string, string> = {
+  "/branding.json": `${RRM_PUBLIC_BASE}branding.json`,
+  "/publish_manifest.json": `${RRM_PUBLIC_BASE}publish_manifest.json`,
+  "/content/front-matter.json": `${RRM_PUBLIC_BASE}content/front-matter.json`,
+};
+
+const EMPTY_JSON_ROUTES: Record<string, unknown> = {
+  "/viewer.json": {},
+  "/content/articles.json": [],
+  "/content/chapters.json": [],
+  "/content/chapter-descriptions.json": {},
+  "/content/magazine-manifest.json": {},
+};
+
 function normalizeRepositoryPath(path: string): string {
   const cleanPath = path.replace(/^public\//i, "").replace(/^\/+/, "");
   return PATH_ALIASES[cleanPath] || cleanPath;
@@ -22,14 +36,45 @@ function isRepositoryAssetPath(path: string): boolean {
   return /^(?:images|magazine-assets|series)\//i.test(path);
 }
 
+function pathFromUrl(value: string): string {
+  try {
+    return new URL(value, window.location.href).pathname;
+  } catch {
+    const clean = value.split(/[?#]/, 1)[0] || "";
+    return clean.startsWith("/") ? clean : `/${clean}`;
+  }
+}
+
+function routeForRrmData(value: string): string | null {
+  const pathname = pathFromUrl(value);
+  return RRM_DATA_ROUTES[pathname] || null;
+}
+
+function emptyJsonForRoute(value: string): unknown | undefined {
+  const pathname = pathFromUrl(value);
+  return EMPTY_JSON_ROUTES[pathname];
+}
+
 export function resolveRrmRepositoryUrl(value?: string | null): string {
   const rawValue = String(value || "").trim();
   if (!rawValue) return "";
 
+  const dataRoute = routeForRrmData(rawValue);
+  if (dataRoute) return dataRoute;
+
   if (rawValue.startsWith(OLD_MAGAZINE_PUBLIC_BASE)) {
-    return `${RRM_PUBLIC_BASE}${normalizeRepositoryPath(
+    const relativePath = normalizeRepositoryPath(
       rawValue.slice(OLD_MAGAZINE_PUBLIC_BASE.length),
-    )}`;
+    );
+
+    const legacyDataRoute = routeForRrmData(`/${relativePath}`);
+    if (legacyDataRoute) return legacyDataRoute;
+
+    if (isRepositoryAssetPath(relativePath)) {
+      return `${RRM_PUBLIC_BASE}${relativePath}`;
+    }
+
+    return rawValue;
   }
 
   if (/^(?:data:|blob:)/i.test(rawValue) || rawValue.startsWith("//")) {
@@ -91,19 +136,57 @@ function rewriteSubtree(root: ParentNode): void {
   );
 }
 
+function syntheticJsonResponse(payload: unknown): Response {
+  return new Response(JSON.stringify(payload), {
+    status: 200,
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+  });
+}
+
 function installFetchRewrite(): void {
   const originalFetch = window.fetch.bind(window);
 
   window.fetch = ((input: RequestInfo | URL, init?: RequestInit) => {
+    const originalUrl =
+      typeof input === "string"
+        ? input
+        : input instanceof URL
+          ? input.toString()
+          : input.url;
+
+    const emptyPayload = emptyJsonForRoute(originalUrl);
+    if (emptyPayload !== undefined) {
+      return Promise.resolve(syntheticJsonResponse(emptyPayload));
+    }
+
+    const pathname = pathFromUrl(originalUrl);
+    if (pathname === "/runtime.css") {
+      return Promise.resolve(
+        new Response("", {
+          status: 200,
+          headers: { "Content-Type": "text/css; charset=utf-8" },
+        }),
+      );
+    }
+    if (pathname === "/runtime.js") {
+      return Promise.resolve(
+        new Response("", {
+          status: 200,
+          headers: { "Content-Type": "text/javascript; charset=utf-8" },
+        }),
+      );
+    }
+
+    const resolvedUrl = resolveRrmRepositoryUrl(originalUrl);
+
     if (typeof input === "string") {
-      return originalFetch(resolveRrmRepositoryUrl(input), init);
+      return originalFetch(resolvedUrl, init);
     }
 
     if (input instanceof URL) {
-      return originalFetch(new URL(resolveRrmRepositoryUrl(input.toString())), init);
+      return originalFetch(new URL(resolvedUrl), init);
     }
 
-    const resolvedUrl = resolveRrmRepositoryUrl(input.url);
     if (resolvedUrl !== input.url) {
       return originalFetch(new Request(resolvedUrl, input), init);
     }
@@ -114,8 +197,8 @@ function installFetchRewrite(): void {
 
 /**
  * Keeps the current reader source intact while making standalone RRM builds
- * resolve repository-owned media from Joliel21/RRM. WordPress-localized URLs
- * remain untouched unless they explicitly point at the old Magazine public repo.
+ * resolve repository-owned content and media from Joliel21/RRM. Missing legacy
+ * feeds return valid empty payloads instead of Vite's index.html fallback.
  */
 export function installRrmRuntime(): void {
   if (typeof window === "undefined" || typeof document === "undefined") return;
