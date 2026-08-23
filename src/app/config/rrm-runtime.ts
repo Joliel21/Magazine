@@ -2,6 +2,7 @@ const RRM_PUBLIC_BASE =
   "https://raw.githubusercontent.com/Joliel21/RRM/main/magazine-source/public/";
 const OLD_MAGAZINE_PUBLIC_BASE =
   "https://raw.githubusercontent.com/Joliel21/Magazine/main/public/";
+const RRM_FRONT_MATTER_URL = `${RRM_PUBLIC_BASE}content/front-matter.json`;
 
 const PATH_ALIASES: Record<string, string> = {
   "images/bsyndro.png": "images/bardet_biedl_syndrome.png",
@@ -16,7 +17,7 @@ const PATH_ALIASES: Record<string, string> = {
 const RRM_DATA_ROUTES: Record<string, string> = {
   "/branding.json": `${RRM_PUBLIC_BASE}branding.json`,
   "/publish_manifest.json": `${RRM_PUBLIC_BASE}publish_manifest.json`,
-  "/content/front-matter.json": `${RRM_PUBLIC_BASE}content/front-matter.json`,
+  "/content/front-matter.json": RRM_FRONT_MATTER_URL,
 };
 
 const EMPTY_JSON_ROUTES: Record<string, unknown> = {
@@ -26,6 +27,46 @@ const EMPTY_JSON_ROUTES: Record<string, unknown> = {
   "/content/chapter-descriptions.json": {},
   "/content/magazine-manifest.json": {},
 };
+
+type FrontMatterPage = {
+  pageNumber?: number;
+  imageUrl?: string;
+  alt?: string;
+  toc?: { title: string; level: number };
+  [key: string]: unknown;
+};
+
+function patchRrmFrontMatter(payload: unknown): unknown {
+  if (!payload || typeof payload !== "object") return payload;
+
+  const frontMatter = payload as { pages?: FrontMatterPage[] };
+  if (!Array.isArray(frontMatter.pages)) return payload;
+
+  return {
+    ...frontMatter,
+    pages: frontMatter.pages.map((page) => {
+      if (page.pageNumber === 96) {
+        return {
+          ...page,
+          imageUrl: "/images/rare-pages/rare-insights-page-94.png",
+          alt: "RARE Insights spread, left page",
+          toc: { title: "RARE Insights", level: 0 },
+        };
+      }
+
+      if (page.pageNumber === 97) {
+        const { toc: _toc, ...pageWithoutToc } = page;
+        return {
+          ...pageWithoutToc,
+          imageUrl: "/images/rare-pages/rare-insights-page-95.png",
+          alt: "RARE Insights spread, right page",
+        };
+      }
+
+      return page;
+    }),
+  };
+}
 
 function normalizeRepositoryPath(path: string): string {
   const cleanPath = path.replace(/^public\//i, "").replace(/^\/+/, "");
@@ -179,19 +220,36 @@ function installFetchRewrite(): void {
 
     const resolvedUrl = resolveRrmRepositoryUrl(originalUrl);
 
-    if (typeof input === "string") {
-      return originalFetch(resolvedUrl, init);
+    const fetchResolved = () => {
+      if (typeof input === "string") {
+        return originalFetch(resolvedUrl, init);
+      }
+
+      if (input instanceof URL) {
+        return originalFetch(new URL(resolvedUrl), init);
+      }
+
+      if (resolvedUrl !== input.url) {
+        return originalFetch(new Request(resolvedUrl, input), init);
+      }
+
+      return originalFetch(input, init);
+    };
+
+    if (resolvedUrl === RRM_FRONT_MATTER_URL) {
+      return fetchResolved().then(async (response) => {
+        if (!response.ok) return response;
+
+        try {
+          const payload = await response.clone().json();
+          return syntheticJsonResponse(patchRrmFrontMatter(payload));
+        } catch {
+          return response;
+        }
+      });
     }
 
-    if (input instanceof URL) {
-      return originalFetch(new URL(resolvedUrl), init);
-    }
-
-    if (resolvedUrl !== input.url) {
-      return originalFetch(new Request(resolvedUrl, input), init);
-    }
-
-    return originalFetch(input, init);
+    return fetchResolved();
   }) as typeof window.fetch;
 }
 
